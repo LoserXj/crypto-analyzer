@@ -1,0 +1,39 @@
+name: Crypto Analysis
+
+on:
+  schedule:
+    # 每4小时运行一次 (UTC: 0,4,8,12,16,20)
+    - cron: '0 */4 * * *'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  analyze:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Install dependencies
+        run: pip install -r requirements.txt
+
+      - name: Run analysis
+        env:
+          WECHAT_TOKEN: ${{ secrets.WECHAT_TOKEN }}
+        run: |
+          cd $GITHUB_WORKSPACE
+          python -m src.main --pairs BTC,ETH,SOL --output json --notify > /dev/null 2>&1 || true
+          python -m src.main --pairs BTC,ETH,SOL
+
+      - name: Commit and push results
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add docs/data/
+          git diff --staged --quiet || git commit -m "chore: update analysis $(date -u +%Y-%m-%dT%H:%M)"
+          git push
