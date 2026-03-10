@@ -546,7 +546,9 @@
     <div class="topbar-logo"><span>C</span>rypto Analyzer</div>
     <div class="topbar-meta">
         <div class="live-dot"></div>
-        <span id="updateTime">---</span>
+        <span id="liveTime">---</span>
+        <span style="color:var(--text-3);margin:0 4px">|</span>
+        <span id="updateTime" style="font-size:11px;color:var(--text-3)">---</span>
     </div>
 </div>
 
@@ -565,6 +567,9 @@
 
 <script>
 let allData = [], activeIndex = 0;
+let livePrices = {}; // { 'BTC-USDT': { price, open24h, change_pct } }
+let nextRefresh = 0;
+let countdownTimer = null;
 
 async function loadData() {
     try {
@@ -573,7 +578,9 @@ async function loadData() {
         const d = await r.json();
         allData = d.analyses || [];
         document.getElementById('updateTime').textContent =
-            new Date(d.updated_at).toLocaleString('zh-CN', { timeZone: 'Asia/Shanghai' });
+            '分析于 ' + new Date(d.updated_at).toLocaleString('zh-CN', { timeZone: 'Asia/Shanghai' });
+        // 首次加载后立即拉实时价格
+        await fetchLivePrices();
         renderTabs();
         renderActive();
     } catch {
@@ -582,16 +589,73 @@ async function loadData() {
     }
 }
 
+async function fetchLivePrices() {
+    if (!allData.length) return;
+    const pairs = allData.map(r => r.inst_id);
+    try {
+        // 并行拉取所有币种的 ticker
+        const results = await Promise.allSettled(
+            pairs.map(p =>
+                fetch(`https://www.okx.com/api/v5/market/ticker?instId=${p}`)
+                    .then(r => r.json())
+            )
+        );
+        for (let i = 0; i < results.length; i++) {
+            if (results[i].status === 'fulfilled') {
+                const d = results[i].value;
+                if (d.code === '0' && d.data && d.data[0]) {
+                    const t = d.data[0];
+                    const price = parseFloat(t.last);
+                    const open24 = parseFloat(t.open24h);
+                    const chg = open24 > 0 ? ((price - open24) / open24 * 100) : 0;
+                    livePrices[pairs[i]] = {
+                        price: price,
+                        open24h: open24,
+                        change_pct: Math.round(chg * 100) / 100,
+                        high24h: parseFloat(t.high24h),
+                        low24h: parseFloat(t.low24h),
+                    };
+                    // 同步更新 allData 里的价格用于渲染
+                    allData[i]._livePrice = price;
+                    allData[i]._liveChange = Math.round(chg * 100) / 100;
+                }
+            }
+        }
+        // 更新时间
+        document.getElementById('liveTime').textContent =
+            new Date().toLocaleTimeString('zh-CN', { timeZone: 'Asia/Shanghai', hour: '2-digit', minute: '2-digit', second: '2-digit' });
+        // 开始倒计时
+        startCountdown();
+    } catch (e) {
+        console.warn('Live price fetch failed:', e);
+    }
+    renderTabs();
+    renderActive();
+}
+
+function startCountdown() {
+    nextRefresh = 300; // 5分钟
+    if (countdownTimer) clearInterval(countdownTimer);
+    countdownTimer = setInterval(() => {
+        nextRefresh--;
+        if (nextRefresh <= 0) {
+            clearInterval(countdownTimer);
+            fetchLivePrices();
+        }
+    }, 1000);
+}
+
 function renderTabs() {
     document.getElementById('coinTabs').innerHTML = allData.map((r, i) => {
         const name = r.inst_id.replace('-USDT', '');
-        const ch = r.change_pct;
-        const cls = ch >= 0 ? 'up' : 'down';
-        const sign = ch >= 0 ? '+' : '';
+        const liveP = r._livePrice || r.price;
+        const liveCh = r._liveChange != null ? r._liveChange : r.change_pct;
+        const cls = liveCh >= 0 ? 'up' : 'down';
+        const sign = liveCh >= 0 ? '+' : '';
         return `<button class="coin-pill ${i===activeIndex?'active':''}" onclick="switchTab(${i})">
             <span class="coin-name">${name}</span>
-            <span class="coin-price">${fmtP(r.price)}</span>
-            <span class="coin-chg ${cls}">${sign}${ch.toFixed(2)}%</span>
+            <span class="coin-price">${fmtP(liveP)}</span>
+            <span class="coin-chg ${cls}">${sign}${liveCh.toFixed(2)}%</span>
         </button>`;
     }).join('');
 }
@@ -670,9 +734,12 @@ function renderStrat(s, isPrimary) {
 }
 
 function renderPage(r) {
-    const chCls = r.change_pct >= 0 ? 'green' : 'red';
-    const chArrow = r.change_pct >= 0 ? '&#x25B2;' : '&#x25BC;';
+    const liveP = r._livePrice || r.price;
+    const liveCh = r._liveChange != null ? r._liveChange : r.change_pct;
+    const chCls = liveCh >= 0 ? 'green' : 'red';
+    const chArrow = liveCh >= 0 ? '&#x25B2;' : '&#x25BC;';
     const c = r.candle;
+    const live = livePrices[r.inst_id];
 
     /* verdict */
     const verdictMap = {
@@ -708,13 +775,20 @@ function renderPage(r) {
     <!-- HERO -->
     <div class="hero">
         <div class="hero-price">
-            <div class="hero-pair">${r.inst_id} / ${r.bar}</div>
-            <div class="hero-num">${fmtP(r.price)}</div>
+            <div class="hero-pair">${r.inst_id} / ${r.bar}
+                <span style="font-size:11px;color:var(--text-3);text-transform:none;letter-spacing:0;font-weight:400;margin-left:8px">实时</span>
+            </div>
+            <div class="hero-num">${fmtP(liveP)}</div>
             <div class="hero-change ${chCls}">
                 <span class="arrow">${chArrow}</span>
-                ${Math.abs(r.change_pct).toFixed(2)}%
+                ${Math.abs(liveCh).toFixed(2)}% <span style="font-size:12px;color:var(--text-3)">(24h)</span>
             </div>
-            <div class="hero-candle">
+            ${live ? `<div style="margin-top:10px;font-size:12px;color:var(--text-2)">
+                24h H <span style="color:var(--green)">${fmtP(live.high24h)}</span>
+                &nbsp; L <span style="color:var(--red)">${fmtP(live.low24h)}</span>
+            </div>` : ''}
+            <div class="hero-candle" style="margin-top:8px">
+                <span style="color:var(--text-3)">分析快照 (${r.bar}):</span>
                 O <span>${fmtP(c.open)}</span>
                 H <span>${fmtP(c.high)}</span>
                 L <span>${fmtP(c.low)}</span>
@@ -768,10 +842,10 @@ function renderPage(r) {
             <div class="ind-row">
                 <span class="ind-label">EMA 20 / 50${r.ema200 ? ' / 200' : ''}</span>
                 <span class="ind-val">
-                    <span class="${r.price>r.ema20?'green':'red'}">${fmtP(r.ema20)}</span>
+                    <span class="${liveP>r.ema20?'green':'red'}">${fmtP(r.ema20)}</span>
                     <span style="color:var(--text-3)"> / </span>
-                    <span class="${r.price>r.ema50?'green':'red'}">${fmtP(r.ema50)}</span>
-                    ${r.ema200 ? `<span style="color:var(--text-3)"> / </span><span class="${r.price>r.ema200?'green':'red'}">${fmtP(r.ema200)}</span>` : ''}
+                    <span class="${liveP>r.ema50?'green':'red'}">${fmtP(r.ema50)}</span>
+                    ${r.ema200 ? `<span style="color:var(--text-3)"> / </span><span class="${liveP>r.ema200?'green':'red'}">${fmtP(r.ema200)}</span>` : ''}
                 </span>
             </div>
             <div class="ind-row">
@@ -793,10 +867,10 @@ function renderPage(r) {
                     let html = '';
                     let insertedCurrent = false;
                     for (const lv of allLevels) {
-                        if (!insertedCurrent && lv.price < r.price) {
+                        if (!insertedCurrent && lv.price < liveP) {
                             html += `<div class="ladder-current">
                                 <span style="font-size:11px;color:var(--blue)">当前</span>
-                                <span class="ladder-price" style="color:var(--blue)">${fmtP(r.price)}</span>
+                                <span class="ladder-price" style="color:var(--blue)">${fmtP(liveP)}</span>
                             </div>`;
                             insertedCurrent = true;
                         }
@@ -810,7 +884,7 @@ function renderPage(r) {
                     if (!insertedCurrent) {
                         html += `<div class="ladder-current">
                             <span style="font-size:11px;color:var(--blue)">当前</span>
-                            <span class="ladder-price" style="color:var(--blue)">${fmtP(r.price)}</span>
+                            <span class="ladder-price" style="color:var(--blue)">${fmtP(liveP)}</span>
                         </div>`;
                     }
                     return html;
@@ -876,7 +950,8 @@ function renderPage(r) {
 }
 
 loadData();
-setInterval(loadData, 300000);
+// 每小时重新加载分析 JSON（防止 Actions 更新了新数据）
+setInterval(loadData, 3600000);
 </script>
 </body>
 </html>
