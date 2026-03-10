@@ -5,439 +5,878 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Crypto Analyzer</title>
     <style>
+        :root {
+            --bg-0: #0a0e14;
+            --bg-1: #111720;
+            --bg-2: #1a2030;
+            --bg-3: #222d3d;
+            --border: #2a3545;
+            --border-light: #354155;
+            --text-0: #e8edf4;
+            --text-1: #a8b4c4;
+            --text-2: #6b7a8d;
+            --text-3: #4a5568;
+            --green: #00d4aa;
+            --green-dim: rgba(0,212,170,0.12);
+            --green-mid: rgba(0,212,170,0.25);
+            --red: #ff5c5c;
+            --red-dim: rgba(255,92,92,0.12);
+            --red-mid: rgba(255,92,92,0.25);
+            --blue: #4d9fff;
+            --blue-dim: rgba(77,159,255,0.12);
+            --yellow: #ffb84d;
+            --yellow-dim: rgba(255,184,77,0.12);
+            --radius: 12px;
+            --radius-sm: 8px;
+        }
         * { margin: 0; padding: 0; box-sizing: border-box; }
         body {
-            font-family: -apple-system, 'SF Mono', 'Menlo', monospace;
-            background: #0d1117;
-            color: #c9d1d9;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Inter', sans-serif;
+            background: var(--bg-0);
+            color: var(--text-0);
             min-height: 100vh;
+            -webkit-font-smoothing: antialiased;
         }
-        .header {
-            background: #161b22;
-            border-bottom: 1px solid #30363d;
-            padding: 16px 24px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            flex-wrap: wrap;
-            gap: 8px;
-        }
-        .header h1 { font-size: 20px; color: #58a6ff; white-space: nowrap; }
-        .header .update-time { font-size: 12px; color: #8b949e; }
-        .container { max-width: 1200px; margin: 0 auto; padding: 20px; }
 
-        /* 币种 Tabs */
-        .coin-tabs {
+        /* ===== NAV ===== */
+        .topbar {
+            background: var(--bg-1);
+            border-bottom: 1px solid var(--border);
+            padding: 0 24px;
+            height: 56px;
             display: flex;
-            gap: 6px;
-            margin-bottom: 20px;
-            flex-wrap: wrap;
+            align-items: center;
+            justify-content: space-between;
             position: sticky;
             top: 0;
-            background: #0d1117;
-            padding: 12px 0;
-            z-index: 10;
-            border-bottom: 1px solid #21262d;
+            z-index: 100;
+            backdrop-filter: blur(12px);
         }
-        .coin-tab {
-            padding: 8px 16px;
-            border: 1px solid #30363d;
-            border-radius: 20px;
-            background: transparent;
-            color: #8b949e;
-            cursor: pointer;
-            font-size: 14px;
-            font-family: inherit;
-            transition: all 0.2s;
+        .topbar-logo {
+            font-size: 17px;
+            font-weight: 700;
+            color: var(--text-0);
+            letter-spacing: -0.3px;
             display: flex;
             align-items: center;
-            gap: 6px;
-        }
-        .coin-tab:hover { border-color: #58a6ff; color: #c9d1d9; }
-        .coin-tab.active { background: #1f6feb; border-color: #1f6feb; color: #fff; }
-        .coin-tab .tab-change { font-size: 12px; }
-        .coin-tab .tab-change.up { color: #3fb950; }
-        .coin-tab .tab-change.down { color: #f85149; }
-        .coin-tab.active .tab-change { color: rgba(255,255,255,0.8); }
-
-        .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(350px, 1fr)); gap: 16px; }
-        .card {
-            background: #161b22;
-            border: 1px solid #30363d;
-            border-radius: 8px;
-            padding: 20px;
-        }
-        .card h2 {
-            font-size: 13px;
-            color: #8b949e;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-            margin-bottom: 12px;
-            border-bottom: 1px solid #21262d;
-            padding-bottom: 8px;
-        }
-        .price-main { font-size: 36px; font-weight: bold; color: #f0f6fc; }
-        .price-change { font-size: 18px; margin-left: 8px; }
-        .green { color: #3fb950; }
-        .red { color: #f85149; }
-        .yellow { color: #d29922; }
-        .signal-row {
-            display: flex;
-            justify-content: space-between;
-            padding: 6px 0;
-            border-bottom: 1px solid #21262d;
-        }
-        .signal-label { color: #8b949e; }
-        .signal-value { font-weight: 600; }
-
-        /* 判定框 */
-        .verdict-box {
-            text-align: center;
-            padding: 14px;
-            border-radius: 8px;
-            font-size: 20px;
-            font-weight: bold;
-            margin-top: 12px;
-        }
-        .verdict-bull { background: rgba(63,185,80,0.15); color: #3fb950; border: 1px solid #238636; }
-        .verdict-bear { background: rgba(248,81,73,0.15); color: #f85149; border: 1px solid #da3633; }
-        .verdict-neutral { background: rgba(210,153,34,0.15); color: #d29922; border: 1px solid #9e6a03; }
-
-        /* 策略卡 */
-        .strategy-card {
-            border: 1px solid #30363d;
-            border-radius: 8px;
-            padding: 16px;
-            margin-top: 12px;
-        }
-        .strategy-card.primary { border-color: #1f6feb; background: rgba(31,111,235,0.08); }
-        .strategy-card.secondary { opacity: 0.7; }
-        .strategy-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 10px;
-        }
-        .strategy-dir {
-            font-size: 16px;
-            font-weight: bold;
-            display: flex;
-            align-items: center;
-            gap: 6px;
-        }
-        .strategy-dir.long { color: #3fb950; }
-        .strategy-dir.short { color: #f85149; }
-        .strategy-badge {
-            font-size: 11px;
-            padding: 2px 8px;
-            border-radius: 10px;
-            background: #1f6feb;
-            color: #fff;
-        }
-        .strategy-levels {
-            display: grid;
-            grid-template-columns: repeat(2, 1fr);
             gap: 8px;
-            margin-bottom: 10px;
         }
-        .strategy-level {
-            padding: 8px;
-            border-radius: 6px;
-            background: #0d1117;
+        .topbar-logo span { color: var(--blue); }
+        .topbar-meta {
+            font-size: 12px;
+            color: var(--text-2);
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+        .live-dot {
+            width: 7px; height: 7px;
+            background: var(--green);
+            border-radius: 50%;
+            animation: pulse 2s infinite;
+        }
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.3; }
+        }
+
+        /* ===== COIN OVERVIEW STRIP ===== */
+        .overview-strip {
+            display: flex;
+            gap: 8px;
+            padding: 16px 24px;
+            overflow-x: auto;
+            scrollbar-width: none;
+            -ms-overflow-style: none;
+        }
+        .overview-strip::-webkit-scrollbar { display: none; }
+        .coin-pill {
+            flex-shrink: 0;
+            padding: 10px 18px;
+            border-radius: 28px;
+            border: 1.5px solid var(--border);
+            background: var(--bg-1);
+            cursor: pointer;
+            transition: all 0.25s ease;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-family: inherit;
+            color: var(--text-1);
+            font-size: 14px;
+            font-weight: 500;
+        }
+        .coin-pill:hover { border-color: var(--blue); background: var(--bg-2); }
+        .coin-pill.active {
+            border-color: var(--blue);
+            background: var(--blue-dim);
+            color: var(--text-0);
+            box-shadow: 0 0 20px rgba(77,159,255,0.15);
+        }
+        .coin-pill .coin-name { font-weight: 700; font-size: 14px; }
+        .coin-pill .coin-price {
+            font-family: 'SF Mono', 'Fira Code', monospace;
+            font-size: 13px;
+            color: var(--text-2);
+        }
+        .coin-pill.active .coin-price { color: var(--text-1); }
+        .coin-pill .coin-chg { font-size: 12px; font-weight: 600; }
+        .coin-pill .coin-chg.up { color: var(--green); }
+        .coin-pill .coin-chg.down { color: var(--red); }
+
+        .container { max-width: 1360px; margin: 0 auto; padding: 0 24px 40px; }
+
+        /* ===== HERO: PRICE + VERDICT ===== */
+        .hero {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+            margin-bottom: 20px;
+            margin-top: 4px;
+        }
+        .hero-price {
+            background: var(--bg-1);
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            padding: 28px 32px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+        .hero-pair {
+            font-size: 13px;
+            color: var(--text-2);
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+            font-weight: 600;
+            margin-bottom: 8px;
+        }
+        .hero-num {
+            font-family: 'SF Mono', 'Fira Code', monospace;
+            font-size: 44px;
+            font-weight: 700;
+            letter-spacing: -1px;
+            line-height: 1.1;
+        }
+        .hero-change {
+            margin-top: 8px;
+            font-size: 16px;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+        .hero-change .arrow { font-size: 14px; }
+        .hero-candle {
+            margin-top: 16px;
+            font-family: 'SF Mono', 'Fira Code', monospace;
+            font-size: 12px;
+            color: var(--text-2);
+            display: flex;
+            gap: 16px;
+        }
+        .hero-candle span { color: var(--text-1); }
+
+        /* Verdict panel */
+        .hero-verdict {
+            background: var(--bg-1);
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            padding: 28px 32px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
             text-align: center;
         }
-        .strategy-level .label { font-size: 11px; color: #8b949e; }
-        .strategy-level .value { font-size: 15px; font-weight: bold; margin-top: 2px; }
-        .rr-badge {
-            display: inline-block;
-            padding: 2px 10px;
-            border-radius: 10px;
+        .gauge-wrap { margin-bottom: 16px; position: relative; width: 160px; height: 90px; }
+        .gauge-svg { width: 160px; height: 90px; }
+        .gauge-bg { fill: none; stroke: var(--bg-3); stroke-width: 10; stroke-linecap: round; }
+        .gauge-fill { fill: none; stroke-width: 10; stroke-linecap: round; transition: stroke-dashoffset 0.8s ease, stroke 0.5s; }
+        .gauge-label {
+            position: absolute;
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            font-family: 'SF Mono', 'Fira Code', monospace;
+            font-size: 22px;
+            font-weight: 700;
+        }
+        .gauge-sub { font-size: 11px; color: var(--text-2); display: flex; justify-content: space-between; width: 140px; margin-top: 2px; }
+        .verdict-text {
+            font-size: 20px;
+            font-weight: 700;
+            margin-top: 12px;
+        }
+        .verdict-hint {
+            font-size: 13px;
+            color: var(--text-2);
+            margin-top: 4px;
+        }
+        .signal-pills {
+            display: flex;
+            gap: 12px;
+            margin-top: 14px;
+        }
+        .signal-pill {
+            padding: 5px 14px;
+            border-radius: 20px;
             font-size: 13px;
             font-weight: 600;
         }
-        .rr-good { background: rgba(63,185,80,0.2); color: #3fb950; }
-        .rr-ok { background: rgba(210,153,34,0.2); color: #d29922; }
-        .rr-bad { background: rgba(248,81,73,0.2); color: #f85149; }
-        .reasons { font-size: 13px; margin-top: 8px; }
-        .reasons .for { color: #3fb950; }
-        .reasons .against { color: #f85149; }
+        .signal-pill.bull { background: var(--green-dim); color: var(--green); }
+        .signal-pill.bear { background: var(--red-dim); color: var(--red); }
 
-        .level-tag {
-            display: inline-block;
-            padding: 2px 8px;
-            margin: 2px;
-            border-radius: 4px;
-            font-size: 13px;
+        /* ===== MAIN GRID ===== */
+        .main-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
         }
-        .level-resist { background: rgba(248,81,73,0.15); color: #f85149; }
-        .level-support { background: rgba(63,185,80,0.15); color: #3fb950; }
-        .pattern-item { padding: 4px 0; font-size: 14px; }
-        .loading { text-align: center; padding: 60px; color: #8b949e; font-size: 16px; }
-        .empty { color: #484f58; font-style: italic; }
-        .rsi-bar { height: 8px; background: #21262d; border-radius: 4px; margin-top: 4px; position: relative; }
-        .rsi-fill { height: 100%; border-radius: 4px; transition: width 0.3s; }
+        .card {
+            background: var(--bg-1);
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            padding: 24px;
+        }
+        .card-title {
+            font-size: 12px;
+            color: var(--text-2);
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+            font-weight: 700;
+            margin-bottom: 16px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .card-title::before {
+            content: '';
+            width: 3px;
+            height: 14px;
+            border-radius: 2px;
+            background: var(--blue);
+        }
+
+        /* ===== STRATEGY ===== */
+        .strat-wrap { display: flex; flex-direction: column; gap: 14px; }
+        .strat {
+            border: 1px solid var(--border);
+            border-radius: var(--radius-sm);
+            padding: 18px;
+            transition: all 0.2s;
+        }
+        .strat.is-primary {
+            border-color: var(--blue);
+            background: linear-gradient(135deg, rgba(77,159,255,0.06) 0%, transparent 60%);
+        }
+        .strat.is-secondary { opacity: 0.55; }
+        .strat.is-secondary:hover { opacity: 0.85; }
+        .strat-head {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 14px;
+        }
+        .strat-dir {
+            font-size: 15px;
+            font-weight: 700;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+        .strat-dir.long { color: var(--green); }
+        .strat-dir.short { color: var(--red); }
+        .strat-tag {
+            font-size: 10px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            padding: 3px 10px;
+            border-radius: 20px;
+        }
+        .strat-tag.primary { background: var(--blue); color: #fff; }
+        .strat-tag.secondary { background: var(--bg-3); color: var(--text-2); }
+        .strat-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 8px;
+            margin-bottom: 12px;
+        }
+        .strat-cell {
+            background: var(--bg-0);
+            border-radius: 6px;
+            padding: 10px 8px;
+            text-align: center;
+        }
+        .strat-cell .sc-label {
+            font-size: 10px;
+            color: var(--text-3);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-bottom: 4px;
+        }
+        .strat-cell .sc-val {
+            font-family: 'SF Mono', 'Fira Code', monospace;
+            font-size: 14px;
+            font-weight: 600;
+        }
+        .strat-rr {
+            text-align: center;
+            font-size: 13px;
+            color: var(--text-2);
+            margin-bottom: 10px;
+        }
+        .strat-rr strong {
+            font-family: 'SF Mono', 'Fira Code', monospace;
+            padding: 2px 10px;
+            border-radius: 4px;
+            font-size: 14px;
+        }
+        .rr-good { background: var(--green-dim); color: var(--green); }
+        .rr-ok { background: var(--yellow-dim); color: var(--yellow); }
+        .rr-bad { background: var(--red-dim); color: var(--red); }
+        .strat-reasons {
+            font-size: 12px;
+            line-height: 1.8;
+        }
+        .strat-reasons .r-for { color: var(--green); }
+        .strat-reasons .r-against { color: var(--red); opacity: 0.8; }
+
+        /* ===== INDICATORS ===== */
+        .ind-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 10px 0;
+            border-bottom: 1px solid rgba(42,53,69,0.5);
+        }
+        .ind-row:last-child { border-bottom: none; }
+        .ind-label {
+            font-size: 13px;
+            color: var(--text-2);
+            font-weight: 500;
+        }
+        .ind-val {
+            font-family: 'SF Mono', 'Fira Code', monospace;
+            font-size: 13px;
+            font-weight: 600;
+        }
+        .rsi-track {
+            width: 100%;
+            height: 6px;
+            background: var(--bg-3);
+            border-radius: 3px;
+            margin-top: 6px;
+            position: relative;
+            overflow: hidden;
+        }
+        .rsi-track::before, .rsi-track::after {
+            content: '';
+            position: absolute;
+            top: 0; bottom: 0;
+            width: 1px;
+            background: var(--text-3);
+        }
+        .rsi-track::before { left: 30%; }
+        .rsi-track::after { left: 70%; }
+        .rsi-bar-fill {
+            height: 100%;
+            border-radius: 3px;
+            transition: width 0.6s ease;
+        }
+        .divergence-tag {
+            display: inline-block;
+            padding: 3px 10px;
+            border-radius: 4px;
+            font-size: 12px;
+            font-weight: 600;
+            margin-top: 6px;
+        }
+
+        /* ===== PRICE LADDER ===== */
+        .ladder { display: flex; flex-direction: column; gap: 0; }
+        .ladder-section {
+            padding: 6px 0;
+        }
+        .ladder-section-title {
+            font-size: 10px;
+            color: var(--text-3);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 6px;
+            font-weight: 700;
+        }
+        .ladder-level {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 5px 0;
+        }
+        .ladder-bar {
+            height: 4px;
+            border-radius: 2px;
+            min-width: 20px;
+        }
+        .ladder-bar.resist { background: var(--red); }
+        .ladder-bar.support { background: var(--green); }
+        .ladder-price {
+            font-family: 'SF Mono', 'Fira Code', monospace;
+            font-size: 13px;
+            font-weight: 600;
+            min-width: 90px;
+        }
+        .ladder-freq {
+            font-size: 11px;
+            color: var(--text-3);
+        }
+        .ladder-current {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 8px 12px;
+            margin: 6px 0;
+            background: var(--blue-dim);
+            border-radius: 6px;
+            border-left: 3px solid var(--blue);
+        }
+        .ladder-current .ladder-price { color: var(--blue); }
+        .liq-row {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 4px 0;
+            font-size: 12px;
+            color: var(--text-2);
+        }
+        .liq-dot {
+            width: 6px;
+            height: 6px;
+            border-radius: 50%;
+        }
+
+        /* ===== PATTERNS ===== */
+        .pattern-list { display: flex; flex-direction: column; gap: 2px; }
+        .pat-item {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 8px 10px;
+            border-radius: 6px;
+            font-size: 13px;
+            transition: background 0.15s;
+        }
+        .pat-item:hover { background: var(--bg-2); }
+        .pat-icon {
+            width: 28px;
+            height: 28px;
+            border-radius: 6px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 14px;
+            flex-shrink: 0;
+        }
+        .pat-icon.bull { background: var(--green-dim); }
+        .pat-icon.bear { background: var(--red-dim); }
+        .pat-icon.neutral { background: var(--yellow-dim); }
+        .pat-text { flex: 1; }
+        .pat-time {
+            font-size: 11px;
+            color: var(--text-3);
+            font-family: 'SF Mono', 'Fira Code', monospace;
+        }
+
+        .section-divider {
+            border: none;
+            border-top: 1px solid var(--border);
+            margin: 14px 0;
+        }
+        .empty-hint {
+            color: var(--text-3);
+            font-size: 13px;
+            font-style: italic;
+            padding: 8px 0;
+        }
+
+        /* ===== LOADING ===== */
+        .loading {
+            text-align: center;
+            padding: 120px 20px;
+            color: var(--text-2);
+        }
+        .loading-spinner {
+            width: 32px; height: 32px;
+            border: 3px solid var(--bg-3);
+            border-top: 3px solid var(--blue);
+            border-radius: 50%;
+            animation: spin 0.8s linear infinite;
+            margin: 0 auto 16px;
+        }
+        @keyframes spin { to { transform: rotate(360deg); } }
+
+        /* ===== FOOTER ===== */
         .footer {
             text-align: center;
-            padding: 24px;
-            color: #484f58;
-            font-size: 12px;
-            border-top: 1px solid #21262d;
-            margin-top: 32px;
+            padding: 20px;
+            color: var(--text-3);
+            font-size: 11px;
         }
-        @media (max-width: 768px) {
-            .grid { grid-template-columns: 1fr; }
-            .price-main { font-size: 28px; }
-            .strategy-levels { grid-template-columns: 1fr 1fr; }
-            .coin-tab { padding: 6px 12px; font-size: 13px; }
+
+        /* ===== RESPONSIVE ===== */
+        @media (max-width: 960px) {
+            .hero { grid-template-columns: 1fr; }
+            .main-grid { grid-template-columns: 1fr; }
+        }
+        @media (max-width: 640px) {
+            .topbar { padding: 0 16px; }
+            .overview-strip { padding: 12px 16px; }
+            .container { padding: 0 16px 32px; }
+            .hero-price, .hero-verdict { padding: 20px; }
+            .hero-num { font-size: 32px; }
+            .card { padding: 18px; }
+            .strat-grid { grid-template-columns: repeat(2, 1fr); }
+            .coin-pill { padding: 8px 14px; }
         }
     </style>
 </head>
 <body>
-    <div class="header">
-        <h1>Crypto Analyzer</h1>
-        <div class="update-time" id="updateTime">加载中...</div>
+
+<div class="topbar">
+    <div class="topbar-logo"><span>C</span>rypto Analyzer</div>
+    <div class="topbar-meta">
+        <div class="live-dot"></div>
+        <span id="updateTime">---</span>
     </div>
+</div>
 
-    <div class="container">
-        <div class="coin-tabs" id="coinTabs"></div>
-        <div id="content" class="loading">正在加载数据...</div>
+<div class="overview-strip" id="coinTabs"></div>
+
+<div class="container">
+    <div id="content">
+        <div class="loading">
+            <div class="loading-spinner"></div>
+            正在加载市场数据...
+        </div>
     </div>
+</div>
 
-    <div class="footer">
-        技术面参考，不构成投资建议。请结合消息面和仓位管理。
-    </div>
+<div class="footer">技术面参考，不构成投资建议。请结合消息面和仓位管理。</div>
 
-    <script>
-    let allData = [];
-    let activeIndex = 0;
+<script>
+let allData = [], activeIndex = 0;
 
-    async function loadData() {
-        try {
-            const resp = await fetch('data/latest.json');
-            if (!resp.ok) throw new Error('No data');
-            const data = await resp.json();
-            allData = data.analyses || [];
-
-            const updateTime = new Date(data.updated_at).toLocaleString('zh-CN', { timeZone: 'Asia/Shanghai' });
-            document.getElementById('updateTime').textContent = `更新于 ${updateTime}`;
-
-            renderTabs();
-            renderActive();
-        } catch (e) {
-            document.getElementById('content').innerHTML =
-                '<div class="loading">暂无数据。请等待 GitHub Actions 首次运行后刷新。</div>';
-        }
-    }
-
-    function renderTabs() {
-        const tabs = document.getElementById('coinTabs');
-        tabs.innerHTML = allData.map((r, i) => {
-            const name = r.inst_id.replace('-USDT', '');
-            const ch = r.change_pct;
-            const chClass = ch >= 0 ? 'up' : 'down';
-            const chText = `${ch >= 0 ? '+' : ''}${ch.toFixed(1)}%`;
-            return `<button class="coin-tab ${i === activeIndex ? 'active' : ''}" onclick="switchTab(${i})">
-                ${name}
-                <span class="tab-change ${chClass}">${chText}</span>
-            </button>`;
-        }).join('');
-    }
-
-    function switchTab(idx) {
-        activeIndex = idx;
+async function loadData() {
+    try {
+        const r = await fetch('data/latest.json');
+        if (!r.ok) throw 0;
+        const d = await r.json();
+        allData = d.analyses || [];
+        document.getElementById('updateTime').textContent =
+            new Date(d.updated_at).toLocaleString('zh-CN', { timeZone: 'Asia/Shanghai' });
         renderTabs();
         renderActive();
+    } catch {
+        document.getElementById('content').innerHTML =
+            '<div class="loading">暂无数据，等待首次分析运行...</div>';
     }
+}
 
-    function renderActive() {
-        if (!allData.length) return;
-        const r = allData[activeIndex];
-        document.getElementById('content').innerHTML = renderPair(r);
-    }
+function renderTabs() {
+    document.getElementById('coinTabs').innerHTML = allData.map((r, i) => {
+        const name = r.inst_id.replace('-USDT', '');
+        const ch = r.change_pct;
+        const cls = ch >= 0 ? 'up' : 'down';
+        const sign = ch >= 0 ? '+' : '';
+        return `<button class="coin-pill ${i===activeIndex?'active':''}" onclick="switchTab(${i})">
+            <span class="coin-name">${name}</span>
+            <span class="coin-price">${fmtP(r.price)}</span>
+            <span class="coin-chg ${cls}">${sign}${ch.toFixed(2)}%</span>
+        </button>`;
+    }).join('');
+}
 
-    function fmt(n, dec) {
-        if (n == null) return '-';
-        return '$' + n.toLocaleString('en-US', { minimumFractionDigits: dec || 1, maximumFractionDigits: dec || 1 });
-    }
+function switchTab(i) { activeIndex = i; renderTabs(); renderActive(); }
 
-    function renderStrategy(s, isPrimary) {
-        if (!s) return '';
-        const dirClass = s.direction === 'long' ? 'long' : 'short';
-        const dirIcon = s.direction === 'long' ? '📈' : '📉';
-        const badge = isPrimary ? '<span class="strategy-badge">主策略</span>' : '<span style="font-size:12px;color:#8b949e">备选方案</span>';
-        const rrClass = s.risk_reward >= 2 ? 'rr-good' : s.risk_reward >= 1 ? 'rr-ok' : 'rr-bad';
+function renderActive() {
+    if (!allData.length) return;
+    document.getElementById('content').innerHTML = renderPage(allData[activeIndex]);
+}
 
-        return `
-        <div class="strategy-card ${isPrimary ? 'primary' : 'secondary'}">
-            <div class="strategy-header">
-                <div class="strategy-dir ${dirClass}">${dirIcon} ${s.label}</div>
-                <div>${badge}</div>
+/* helpers */
+function fmtP(n, d) {
+    if (n == null) return '-';
+    d = d ?? (n >= 100 ? 1 : n >= 1 ? 3 : 5);
+    return '$' + n.toLocaleString('en-US', { minimumFractionDigits: d, maximumFractionDigits: d });
+}
+
+function renderGauge(bull, bear) {
+    const total = bull + bear || 1;
+    const pct = bull / total;
+    const arcLen = 157; // half circle ~157
+    const offset = arcLen * (1 - pct);
+    let color = pct > 0.6 ? 'var(--green)' : pct < 0.4 ? 'var(--red)' : 'var(--yellow)';
+    const score = Math.round(pct * 100);
+    return `
+    <div class="gauge-wrap">
+        <svg class="gauge-svg" viewBox="0 0 120 65">
+            <path class="gauge-bg" d="M 10 60 A 50 50 0 0 1 110 60"/>
+            <path class="gauge-fill" d="M 10 60 A 50 50 0 0 1 110 60"
+                stroke="${color}"
+                stroke-dasharray="${arcLen}"
+                stroke-dashoffset="${offset}"/>
+        </svg>
+        <div class="gauge-label" style="color:${color}">${score}</div>
+    </div>
+    <div class="gauge-sub"><span>空</span><span>多</span></div>`;
+}
+
+function renderStrat(s, isPrimary) {
+    if (!s) return '';
+    const cls = s.direction === 'long' ? 'long' : 'short';
+    const icon = s.direction === 'long' ? '&#x25B2;' : '&#x25BC;';
+    const rrCls = s.risk_reward >= 2 ? 'rr-good' : s.risk_reward >= 1 ? 'rr-ok' : 'rr-bad';
+    return `
+    <div class="strat ${isPrimary ? 'is-primary' : 'is-secondary'}">
+        <div class="strat-head">
+            <div class="strat-dir ${cls}">${icon} ${s.label}</div>
+            <span class="strat-tag ${isPrimary ? 'primary' : 'secondary'}">${isPrimary ? '主策略' : '备选'}</span>
+        </div>
+        <div class="strat-grid">
+            <div class="strat-cell">
+                <div class="sc-label">入场</div>
+                <div class="sc-val">${fmtP(s.entry_zone[0])}</div>
+                <div style="font-size:10px;color:var(--text-3)">~ ${fmtP(s.entry_zone[1])}</div>
             </div>
-            <div class="strategy-levels">
-                <div class="strategy-level">
-                    <div class="label">入场区间</div>
-                    <div class="value">${fmt(s.entry_zone[0])} ~ ${fmt(s.entry_zone[1])}</div>
-                </div>
-                <div class="strategy-level">
-                    <div class="label">止损</div>
-                    <div class="value red">${fmt(s.stop_loss)}</div>
-                </div>
-                <div class="strategy-level">
-                    <div class="label">止盈 1</div>
-                    <div class="value green">${fmt(s.take_profit[0])}</div>
-                </div>
-                <div class="strategy-level">
-                    <div class="label">止盈 2</div>
-                    <div class="value green">${fmt(s.take_profit[1])}</div>
-                </div>
+            <div class="strat-cell">
+                <div class="sc-label">止损</div>
+                <div class="sc-val red">${fmtP(s.stop_loss)}</div>
             </div>
-            <div style="text-align:center;margin-bottom:8px">
-                盈亏比 <span class="rr-badge ${rrClass}">${s.risk_reward.toFixed(2)}</span>
+            <div class="strat-cell">
+                <div class="sc-label">止盈 1</div>
+                <div class="sc-val green">${fmtP(s.take_profit[0])}</div>
             </div>
-            <div class="reasons">
-                ${s.reasons_for.length ? `<div class="for">✅ ${s.reasons_for.join(' | ')}</div>` : ''}
-                ${s.reasons_against.length ? `<div class="against" style="margin-top:4px">⚠️ ${s.reasons_against.join(' | ')}</div>` : ''}
+            <div class="strat-cell">
+                <div class="sc-label">止盈 2</div>
+                <div class="sc-val green">${fmtP(s.take_profit[1])}</div>
             </div>
-        </div>`;
-    }
+        </div>
+        <div class="strat-rr">盈亏比 <strong class="${rrCls}">${s.risk_reward.toFixed(2)}</strong></div>
+        <div class="strat-reasons">
+            ${s.reasons_for.map(r => `<div class="r-for">+ ${r}</div>`).join('')}
+            ${s.reasons_against.map(r => `<div class="r-against">- ${r}</div>`).join('')}
+        </div>
+    </div>`;
+}
 
-    function renderPair(r) {
-        const changeClass = r.change_pct >= 0 ? 'green' : 'red';
-        const changeIcon = r.change_pct >= 0 ? '▲' : '▼';
+function renderPage(r) {
+    const chCls = r.change_pct >= 0 ? 'green' : 'red';
+    const chArrow = r.change_pct >= 0 ? '&#x25B2;' : '&#x25BC;';
+    const c = r.candle;
 
-        let verdictClass = 'verdict-neutral';
-        let verdictText = r.verdict;
-        if (r.verdict === '偏多') { verdictClass = 'verdict-bull'; verdictText = '📈 偏多 — 关注回踩支撑做多'; }
-        else if (r.verdict === '偏空') { verdictClass = 'verdict-bear'; verdictText = '📉 偏空 — 关注反弹阻力做空'; }
-        else { verdictText = '⚖️ 多空交织 — 建议观望或轻仓'; }
+    /* verdict */
+    const verdictMap = {
+        '偏多': ['var(--green)', '偏多', '关注回踩支撑做多'],
+        '偏空': ['var(--red)', '偏空', '关注反弹阻力做空'],
+        '多空交织': ['var(--yellow)', '多空交织', '建议观望或轻仓']
+    };
+    const [vColor, vText, vHint] = verdictMap[r.verdict] || verdictMap['多空交织'];
 
-        let rsiColor = '#c9d1d9';
-        if (r.rsi > 70) rsiColor = '#f85149';
-        else if (r.rsi < 30) rsiColor = '#3fb950';
-        else if (r.rsi > 60) rsiColor = '#3fb950';
-        else if (r.rsi < 40) rsiColor = '#f85149';
+    /* rsi */
+    let rsiColor = 'var(--text-1)';
+    if (r.rsi > 70) rsiColor = 'var(--red)';
+    else if (r.rsi < 30) rsiColor = 'var(--green)';
+    else if (r.rsi > 60) rsiColor = 'var(--green)';
+    else if (r.rsi < 40) rsiColor = 'var(--red)';
 
-        const crossLabels = { golden: '🔥 金叉', death: '☠️ 死叉', bull_align: '📈 多头排列', bear_align: '📉 空头排列' };
-        const channelLabels = { ascending: '✅ 上升通道', descending: '⚠️ 下降通道', converging: '📐 收敛三角', expanding: '📊 扩散形态', ranging: '📊 横盘震荡' };
-        const patternLabels = { pin_bar_bull: '🔺 看涨Pin Bar', pin_bar_bear: '🔻 看跌Pin Bar', bullish_engulf: '🔺 看涨吞没', bearish_engulf: '🔻 看跌吞没' };
+    const crossLabels = { golden:'🔥 金叉', death:'☠️ 死叉', bull_align:'多头排列', bear_align:'空头排列' };
+    const channelLabels = { ascending:'上升通道', descending:'下降通道', converging:'收敛三角', expanding:'扩散形态', ranging:'横盘震荡' };
+    const channelColors = { ascending:'var(--green)', descending:'var(--red)', converging:'var(--yellow)', expanding:'var(--yellow)', ranging:'var(--text-2)' };
+    const patternLabels = { pin_bar_bull:['看涨 Pin Bar','bull'], pin_bar_bear:['看跌 Pin Bar','bear'], bullish_engulf:['看涨吞没','bull'], bearish_engulf:['看跌吞没','bear'] };
 
-        // Determine primary/secondary strategy
-        const primary = r.primary_strategy || 'long';
-        const secondary = primary === 'long' ? 'short' : 'long';
+    const primary = r.primary_strategy || 'long';
+    const secondary = primary === 'long' ? 'short' : 'long';
 
-        return `
-        <div class="grid">
-            <!-- 价格 + 判定 -->
-            <div class="card">
-                <h2>${r.inst_id} · ${r.bar}</h2>
-                <div>
-                    <span class="price-main">${fmt(r.price)}</span>
-                    <span class="price-change ${changeClass}">${changeIcon} ${Math.abs(r.change_pct).toFixed(2)}%</span>
+    /* price ladder */
+    const allLevels = [];
+    (r.resistances || []).forEach(s => allLevels.push({ price: s.price, count: s.count, type: 'resist' }));
+    (r.supports || []).forEach(s => allLevels.push({ price: s.price, count: s.count, type: 'support' }));
+    allLevels.sort((a, b) => b.price - a.price);
+    const maxCount = Math.max(...allLevels.map(l => l.count), 1);
+
+    return `
+    <!-- HERO -->
+    <div class="hero">
+        <div class="hero-price">
+            <div class="hero-pair">${r.inst_id} / ${r.bar}</div>
+            <div class="hero-num">${fmtP(r.price)}</div>
+            <div class="hero-change ${chCls}">
+                <span class="arrow">${chArrow}</span>
+                ${Math.abs(r.change_pct).toFixed(2)}%
+            </div>
+            <div class="hero-candle">
+                O <span>${fmtP(c.open)}</span>
+                H <span>${fmtP(c.high)}</span>
+                L <span>${fmtP(c.low)}</span>
+                C <span>${fmtP(c.close)}</span>
+            </div>
+        </div>
+        <div class="hero-verdict">
+            ${renderGauge(r.bull_signals, r.bear_signals)}
+            <div class="verdict-text" style="color:${vColor}">${vText}</div>
+            <div class="verdict-hint">${vHint}</div>
+            <div class="signal-pills">
+                <div class="signal-pill bull">多 ${r.bull_signals}</div>
+                <div class="signal-pill bear">空 ${r.bear_signals}</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- MAIN GRID -->
+    <div class="main-grid">
+        <!-- LEFT: Strategy -->
+        <div class="card">
+            <div class="card-title">操作策略</div>
+            <div class="strat-wrap">
+                ${renderStrat(r['strategy_' + primary], true)}
+                ${renderStrat(r['strategy_' + secondary], false)}
+            </div>
+        </div>
+
+        <!-- RIGHT: Indicators -->
+        <div class="card">
+            <div class="card-title">技术指标</div>
+            <div class="ind-row">
+                <span class="ind-label">趋势</span>
+                <span class="ind-val" style="color:${channelColors[r.channel]||'var(--text-1)'}">${channelLabels[r.channel]||r.channel}</span>
+            </div>
+            <div class="ind-row" style="flex-direction:column;align-items:stretch">
+                <div style="display:flex;justify-content:space-between">
+                    <span class="ind-label">RSI (14)</span>
+                    <span class="ind-val" style="color:${rsiColor}">${r.rsi.toFixed(1)} ${r.rsi_label}</span>
                 </div>
-                <div class="verdict-box ${verdictClass}" style="margin-top:16px">${verdictText}</div>
-                <div style="margin-top:12px; display:flex; justify-content:center; gap:24px">
-                    <div>多头信号 <strong class="green">${r.bull_signals}</strong></div>
-                    <div>空头信号 <strong class="red">${r.bear_signals}</strong></div>
+                <div class="rsi-track">
+                    <div class="rsi-bar-fill" style="width:${r.rsi}%;background:${rsiColor}"></div>
                 </div>
+                ${r.rsi_divergence ? `<div class="divergence-tag" style="background:${r.rsi_divergence==='bullish'?'var(--green-dim)':'var(--red-dim)'};color:${r.rsi_divergence==='bullish'?'var(--green)':'var(--red)'}">
+                    ${r.rsi_divergence==='bullish' ? '底背离 — 潜在反转' : '顶背离 — 潜在见顶'}</div>` : ''}
+            </div>
+            <div class="ind-row">
+                <span class="ind-label">EMA 排列</span>
+                <span class="ind-val">${crossLabels[r.ema_cross]||r.ema_cross}</span>
+            </div>
+            <div class="ind-row">
+                <span class="ind-label">EMA 20 / 50${r.ema200 ? ' / 200' : ''}</span>
+                <span class="ind-val">
+                    <span class="${r.price>r.ema20?'green':'red'}">${fmtP(r.ema20)}</span>
+                    <span style="color:var(--text-3)"> / </span>
+                    <span class="${r.price>r.ema50?'green':'red'}">${fmtP(r.ema50)}</span>
+                    ${r.ema200 ? `<span style="color:var(--text-3)"> / </span><span class="${r.price>r.ema200?'green':'red'}">${fmtP(r.ema200)}</span>` : ''}
+                </span>
+            </div>
+            <div class="ind-row">
+                <span class="ind-label">ATR (14)</span>
+                <span class="ind-val">${fmtP(r.atr)} <span style="color:var(--text-3)">${r.atr_pct}%</span></span>
+            </div>
+            <div class="ind-row">
+                <span class="ind-label">成交量</span>
+                <span class="ind-val ${r.vol_ratio>150?'green':r.vol_ratio<50?'red':''}">${r.vol_ratio}%
+                    <span style="color:var(--text-3)">${r.vol_ratio>150?'放量':r.vol_ratio<50?'缩量':'正常'}</span></span>
+            </div>
+        </div>
+
+        <!-- PRICE LEVELS -->
+        <div class="card">
+            <div class="card-title">价格结构</div>
+            <div class="ladder">
+                ${allLevels.length ? (() => {
+                    let html = '';
+                    let insertedCurrent = false;
+                    for (const lv of allLevels) {
+                        if (!insertedCurrent && lv.price < r.price) {
+                            html += `<div class="ladder-current">
+                                <span style="font-size:11px;color:var(--blue)">当前</span>
+                                <span class="ladder-price" style="color:var(--blue)">${fmtP(r.price)}</span>
+                            </div>`;
+                            insertedCurrent = true;
+                        }
+                        const barW = Math.max(20, (lv.count / maxCount) * 80);
+                        html += `<div class="ladder-level">
+                            <div class="ladder-bar ${lv.type}" style="width:${barW}px"></div>
+                            <span class="ladder-price ${lv.type === 'resist' ? 'red' : 'green'}">${fmtP(lv.price)}</span>
+                            <span class="ladder-freq">x${lv.count}</span>
+                        </div>`;
+                    }
+                    if (!insertedCurrent) {
+                        html += `<div class="ladder-current">
+                            <span style="font-size:11px;color:var(--blue)">当前</span>
+                            <span class="ladder-price" style="color:var(--blue)">${fmtP(r.price)}</span>
+                        </div>`;
+                    }
+                    return html;
+                })() : '<div class="empty-hint">未检测到明显支撑/阻力</div>'}
             </div>
 
-            <!-- 操作策略 -->
-            <div class="card">
-                <h2>操作策略</h2>
-                ${renderStrategy(r['strategy_' + primary], true)}
-                ${renderStrategy(r['strategy_' + secondary], false)}
+            ${(r.liquidity_highs.length || r.liquidity_lows.length) ? `
+            <hr class="section-divider">
+            <div style="font-size:11px;color:var(--text-3);text-transform:uppercase;letter-spacing:1px;margin-bottom:6px;font-weight:600">流动性池</div>
+            ${r.liquidity_highs.map(h => `<div class="liq-row"><div class="liq-dot" style="background:var(--red)"></div>上方 ${fmtP(h,0)}</div>`).join('')}
+            ${r.liquidity_lows.map(l => `<div class="liq-row"><div class="liq-dot" style="background:var(--green)"></div>下方 ${fmtP(l,0)}</div>`).join('')}
+            ` : ''}
+        </div>
+
+        <!-- PATTERNS -->
+        <div class="card">
+            <div class="card-title">形态与信号</div>
+            <div class="pattern-list">
+                ${r.patterns.length ? r.patterns.map(p => {
+                    const [label, cls] = patternLabels[p.type] || [p.type, 'neutral'];
+                    const icon = cls === 'bull' ? '&#x25B2;' : cls === 'bear' ? '&#x25BC;' : '&#x25C6;';
+                    return `<div class="pat-item">
+                        <div class="pat-icon ${cls}">${icon}</div>
+                        <div class="pat-text">${label}  ${fmtP(p.close,0)}</div>
+                        <div class="pat-time">${p.time.substring(5,16).replace('T',' ')}</div>
+                    </div>`;
+                }).join('') : '<div class="empty-hint">近期无明显 K 线形态</div>'}
             </div>
 
-            <!-- 技术指标 -->
-            <div class="card">
-                <h2>技术指标</h2>
-                <div class="signal-row">
-                    <span class="signal-label">趋势通道</span>
-                    <span class="signal-value">${channelLabels[r.channel] || r.channel}</span>
-                </div>
-                <div class="signal-row">
-                    <span class="signal-label">RSI (14)</span>
-                    <span class="signal-value" style="color:${rsiColor}">${r.rsi.toFixed(1)} ${r.rsi_label}</span>
-                </div>
-                <div class="rsi-bar"><div class="rsi-fill" style="width:${r.rsi}%;background:${rsiColor}"></div></div>
-                ${r.rsi_divergence ? `<div style="margin-top:4px;font-size:13px;color:${r.rsi_divergence==='bullish'?'#3fb950':'#f85149'}">
-                    ${r.rsi_divergence === 'bullish' ? '🔥 底背离 — 潜在反转' : '⚠️ 顶背离 — 潜在见顶'}</div>` : ''}
-                <div class="signal-row" style="margin-top:8px">
-                    <span class="signal-label">EMA 排列</span>
-                    <span class="signal-value">${crossLabels[r.ema_cross] || r.ema_cross}</span>
-                </div>
-                <div class="signal-row">
-                    <span class="signal-label">EMA20</span>
-                    <span class="signal-value ${r.price > r.ema20 ? 'green' : 'red'}">${fmt(r.ema20)}</span>
-                </div>
-                <div class="signal-row">
-                    <span class="signal-label">EMA50</span>
-                    <span class="signal-value ${r.price > r.ema50 ? 'green' : 'red'}">${fmt(r.ema50)}</span>
-                </div>
-                ${r.ema200 ? `<div class="signal-row">
-                    <span class="signal-label">EMA200</span>
-                    <span class="signal-value ${r.price > r.ema200 ? 'green' : 'red'}">${fmt(r.ema200)}</span>
-                </div>` : ''}
-                <div class="signal-row">
-                    <span class="signal-label">ATR (14)</span>
-                    <span class="signal-value">${fmt(r.atr)} (${r.atr_pct}%)</span>
-                </div>
-                <div class="signal-row">
-                    <span class="signal-label">成交量</span>
-                    <span class="signal-value ${r.vol_ratio > 150 ? 'green' : r.vol_ratio < 50 ? 'red' : ''}">${r.vol_ratio}% 均值</span>
-                </div>
-            </div>
+            ${r.fvgs.length ? `
+            <hr class="section-divider">
+            <div style="font-size:11px;color:var(--text-3);text-transform:uppercase;letter-spacing:1px;margin-bottom:8px;font-weight:600">FVG 缺口</div>
+            ${r.fvgs.map(f => {
+                const cls = f.type === 'bull_fvg' ? 'bull' : 'bear';
+                const icon = cls === 'bull' ? '&#x25B2;' : '&#x25BC;';
+                return `<div class="pat-item">
+                    <div class="pat-icon ${cls}">${icon}</div>
+                    <div class="pat-text">${fmtP(f.low,0)} — ${fmtP(f.high,0)}</div>
+                    <div class="pat-time">${f.time.substring(5,16).replace('T',' ')}</div>
+                </div>`;
+            }).join('')}` : ''}
 
-            <!-- 关键价位 -->
-            <div class="card">
-                <h2>关键价位</h2>
-                <div style="margin-bottom:12px">
-                    <div style="color:#8b949e;font-size:12px;margin-bottom:4px">阻力位</div>
-                    ${r.resistances.length ? r.resistances.map(s =>
-                        `<span class="level-tag level-resist">${fmt(s.price)} (x${s.count})</span>`
-                    ).join('') : '<span class="empty">未检测到</span>'}
-                </div>
-                <div style="margin-bottom:12px">
-                    <div style="color:#8b949e;font-size:12px;margin-bottom:4px">支撑位</div>
-                    ${r.supports.length ? r.supports.map(s =>
-                        `<span class="level-tag level-support">${fmt(s.price)} (x${s.count})</span>`
-                    ).join('') : '<span class="empty">未检测到</span>'}
-                </div>
-                ${(r.liquidity_highs.length || r.liquidity_lows.length) ? `
-                <div style="margin-top:12px;border-top:1px solid #21262d;padding-top:8px">
-                    <div style="color:#8b949e;font-size:12px;margin-bottom:4px">💧 流动性池</div>
-                    ${r.liquidity_highs.length ? '<div>上方: ' + r.liquidity_highs.map(h => `<span class="level-tag level-resist">${fmt(h,0)}</span>`).join('') + '</div>' : ''}
-                    ${r.liquidity_lows.length ? '<div style="margin-top:4px">下方: ' + r.liquidity_lows.map(l => `<span class="level-tag level-support">${fmt(l,0)}</span>`).join('') + '</div>' : ''}
-                </div>` : ''}
-            </div>
+            ${r.breakouts.length ? `
+            <hr class="section-divider">
+            <div style="font-size:11px;color:var(--text-3);text-transform:uppercase;letter-spacing:1px;margin-bottom:8px;font-weight:600">突破检测</div>
+            ${r.breakouts.slice(-5).map(b => {
+                const map = {
+                    fake_high: ['假突破 ↑ 扫高点', 'bear'],
+                    fake_low: ['假突破 ↓ 扫低点', 'bull'],
+                    break_high: ['真突破 ↑', 'bull'],
+                    break_low: ['真突破 ↓', 'bear']
+                };
+                const [label, cls] = map[b.type] || [b.type, 'neutral'];
+                const icon = cls === 'bull' ? '&#x25B2;' : '&#x25BC;';
+                return `<div class="pat-item">
+                    <div class="pat-icon ${cls}">${icon}</div>
+                    <div class="pat-text">${label}  ${fmtP(b.level,0)} → ${fmtP(b.close,0)}</div>
+                    <div class="pat-time">${b.time.substring(5,16).replace('T',' ')}</div>
+                </div>`;
+            }).join('')}` : ''}
+        </div>
+    </div>`;
+}
 
-            <!-- 形态信号 -->
-            <div class="card">
-                <h2>形态信号</h2>
-                ${r.patterns.length ? r.patterns.map(p =>
-                    `<div class="pattern-item">${patternLabels[p.type] || p.type} <span style="color:#8b949e">${p.time.substring(5,16).replace('T',' ')}</span> ${fmt(p.close,0)}</div>`
-                ).join('') : '<div class="empty">近期无明显K线形态</div>'}
-
-                ${r.fvgs.length ? `
-                <div style="margin-top:12px;border-top:1px solid #21262d;padding-top:8px">
-                    <div style="color:#8b949e;font-size:12px;margin-bottom:4px">FVG 缺口</div>
-                    ${r.fvgs.map(f => `<div class="pattern-item">${f.type === 'bull_fvg' ? '🔺' : '🔻'} ${fmt(f.low,0)} - ${fmt(f.high,0)}</div>`).join('')}
-                </div>` : ''}
-
-                ${r.breakouts.length ? `
-                <div style="margin-top:12px;border-top:1px solid #21262d;padding-top:8px">
-                    <div style="color:#8b949e;font-size:12px;margin-bottom:4px">💥 突破检测</div>
-                    ${r.breakouts.map(b => {
-                        const bl = {fake_high:'🔻 假突破(扫高)',fake_low:'🔺 假突破(扫低)',break_high:'✅ 真突破↑',break_low:'❌ 真突破↓'};
-                        return `<div class="pattern-item">${bl[b.type]||b.type} ${fmt(b.level,0)} → ${fmt(b.close,0)}</div>`;
-                    }).join('')}
-                </div>` : ''}
-            </div>
-        </div>`;
-    }
-
-    loadData();
-    setInterval(loadData, 300000);
-    </script>
+loadData();
+setInterval(loadData, 300000);
+</script>
 </body>
 </html>
