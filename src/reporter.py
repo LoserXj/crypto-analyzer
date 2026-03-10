@@ -1,6 +1,23 @@
 """报告生成 — 终端 + JSON"""
 
 
+def _print_strategy(s: dict, is_primary: bool = True):
+    """打印操作策略"""
+    if not s:
+        return
+    tag = "\U0001f7e2 主策略" if is_primary else "\U0001f7e1 备选"
+    icon = "\U0001f4c8" if s["direction"] == "long" else "\U0001f4c9"
+    print(f"\n   {tag} {icon} {s['label']}")
+    print(f"   入场区间: ${s['entry_zone'][0]:,.1f} ~ ${s['entry_zone'][1]:,.1f}")
+    print(f"   止损: ${s['stop_loss']:,.1f}")
+    print(f"   止盈1: ${s['take_profit'][0]:,.1f}  止盈2: ${s['take_profit'][1]:,.1f}")
+    print(f"   盈亏比: {s['risk_reward']:.2f}")
+    if s["reasons_for"]:
+        print(f"   \u2705 支持: {' | '.join(s['reasons_for'])}")
+    if s["reasons_against"]:
+        print(f"   \u26a0\ufe0f  风险: {' | '.join(s['reasons_against'])}")
+
+
 def print_terminal_report(r: dict):
     """打印终端报告"""
     price = r["price"]
@@ -119,6 +136,18 @@ def print_terminal_report(r: dict):
         print("   偏空，关注反弹阻力做空")
     else:
         print("   多空交织，建议观望或轻仓")
+
+    # 操作策略
+    if r.get("bias"):
+        bias_label = "做空" if r["bias"] == "bear" else "做多"
+        print(f"\n   \U0001f3af 你的偏好: {bias_label}")
+
+    primary = r.get("primary_strategy", "long")
+    _print_strategy(r.get(f"strategy_{primary}"), is_primary=True)
+
+    secondary = "short" if primary == "long" else "long"
+    _print_strategy(r.get(f"strategy_{secondary}"), is_primary=False)
+
     print(f"{'=' * 64}")
     print("\u26a0\ufe0f  技术面参考，不构成投资建议。请结合消息面和仓位管理。\n")
 

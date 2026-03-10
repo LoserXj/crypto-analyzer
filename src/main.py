@@ -71,6 +71,7 @@ def cmd_analyze(args: list[str], cfg: dict):
     alert_above = alert_below = None
     output_json = False
     do_notify = False
+    bias = None  # "bull" | "bear"
 
     i = 0
     positional = []
@@ -96,6 +97,14 @@ def cmd_analyze(args: list[str], cfg: dict):
         elif args[i] == "--notify":
             do_notify = True
             i += 1
+        elif args[i] == "--bias" and i + 1 < len(args):
+            b = args[i + 1].lower()
+            if b in ("bull", "bear", "long", "short"):
+                bias = "bull" if b in ("bull", "long") else "bear"
+            else:
+                print(f"无效偏好 '{args[i+1]}'，可选: bull/bear/long/short")
+                return
+            i += 2
         else:
             positional.append(args[i])
             i += 1
@@ -121,7 +130,7 @@ def cmd_analyze(args: list[str], cfg: dict):
             all_results = []
             for pair in pairs:
                 candles = fetch_candles(base_url, pair, bar)
-                result = analyze(candles, pair, bar)
+                result = analyze(candles, pair, bar, bias=bias)
                 all_results.append(result)
 
                 if output_json:

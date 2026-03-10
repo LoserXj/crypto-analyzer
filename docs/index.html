@@ -19,11 +19,48 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
+            flex-wrap: wrap;
+            gap: 8px;
         }
-        .header h1 { font-size: 20px; color: #58a6ff; }
+        .header h1 { font-size: 20px; color: #58a6ff; white-space: nowrap; }
         .header .update-time { font-size: 12px; color: #8b949e; }
         .container { max-width: 1200px; margin: 0 auto; padding: 20px; }
-        .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(360px, 1fr)); gap: 16px; }
+
+        /* 币种 Tabs */
+        .coin-tabs {
+            display: flex;
+            gap: 6px;
+            margin-bottom: 20px;
+            flex-wrap: wrap;
+            position: sticky;
+            top: 0;
+            background: #0d1117;
+            padding: 12px 0;
+            z-index: 10;
+            border-bottom: 1px solid #21262d;
+        }
+        .coin-tab {
+            padding: 8px 16px;
+            border: 1px solid #30363d;
+            border-radius: 20px;
+            background: transparent;
+            color: #8b949e;
+            cursor: pointer;
+            font-size: 14px;
+            font-family: inherit;
+            transition: all 0.2s;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+        .coin-tab:hover { border-color: #58a6ff; color: #c9d1d9; }
+        .coin-tab.active { background: #1f6feb; border-color: #1f6feb; color: #fff; }
+        .coin-tab .tab-change { font-size: 12px; }
+        .coin-tab .tab-change.up { color: #3fb950; }
+        .coin-tab .tab-change.down { color: #f85149; }
+        .coin-tab.active .tab-change { color: rgba(255,255,255,0.8); }
+
+        .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(350px, 1fr)); gap: 16px; }
         .card {
             background: #161b22;
             border: 1px solid #30363d;
@@ -31,7 +68,7 @@
             padding: 20px;
         }
         .card h2 {
-            font-size: 14px;
+            font-size: 13px;
             color: #8b949e;
             text-transform: uppercase;
             letter-spacing: 1px;
@@ -39,11 +76,7 @@
             border-bottom: 1px solid #21262d;
             padding-bottom: 8px;
         }
-        .price-main {
-            font-size: 36px;
-            font-weight: bold;
-            color: #f0f6fc;
-        }
+        .price-main { font-size: 36px; font-weight: bold; color: #f0f6fc; }
         .price-change { font-size: 18px; margin-left: 8px; }
         .green { color: #3fb950; }
         .red { color: #f85149; }
@@ -56,17 +89,79 @@
         }
         .signal-label { color: #8b949e; }
         .signal-value { font-weight: 600; }
+
+        /* 判定框 */
         .verdict-box {
             text-align: center;
-            padding: 16px;
+            padding: 14px;
             border-radius: 8px;
-            font-size: 24px;
+            font-size: 20px;
             font-weight: bold;
             margin-top: 12px;
         }
         .verdict-bull { background: rgba(63,185,80,0.15); color: #3fb950; border: 1px solid #238636; }
         .verdict-bear { background: rgba(248,81,73,0.15); color: #f85149; border: 1px solid #da3633; }
         .verdict-neutral { background: rgba(210,153,34,0.15); color: #d29922; border: 1px solid #9e6a03; }
+
+        /* 策略卡 */
+        .strategy-card {
+            border: 1px solid #30363d;
+            border-radius: 8px;
+            padding: 16px;
+            margin-top: 12px;
+        }
+        .strategy-card.primary { border-color: #1f6feb; background: rgba(31,111,235,0.08); }
+        .strategy-card.secondary { opacity: 0.7; }
+        .strategy-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 10px;
+        }
+        .strategy-dir {
+            font-size: 16px;
+            font-weight: bold;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+        .strategy-dir.long { color: #3fb950; }
+        .strategy-dir.short { color: #f85149; }
+        .strategy-badge {
+            font-size: 11px;
+            padding: 2px 8px;
+            border-radius: 10px;
+            background: #1f6feb;
+            color: #fff;
+        }
+        .strategy-levels {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 8px;
+            margin-bottom: 10px;
+        }
+        .strategy-level {
+            padding: 8px;
+            border-radius: 6px;
+            background: #0d1117;
+            text-align: center;
+        }
+        .strategy-level .label { font-size: 11px; color: #8b949e; }
+        .strategy-level .value { font-size: 15px; font-weight: bold; margin-top: 2px; }
+        .rr-badge {
+            display: inline-block;
+            padding: 2px 10px;
+            border-radius: 10px;
+            font-size: 13px;
+            font-weight: 600;
+        }
+        .rr-good { background: rgba(63,185,80,0.2); color: #3fb950; }
+        .rr-ok { background: rgba(210,153,34,0.2); color: #d29922; }
+        .rr-bad { background: rgba(248,81,73,0.2); color: #f85149; }
+        .reasons { font-size: 13px; margin-top: 8px; }
+        .reasons .for { color: #3fb950; }
+        .reasons .against { color: #f85149; }
+
         .level-tag {
             display: inline-block;
             padding: 2px 8px;
@@ -76,53 +171,11 @@
         }
         .level-resist { background: rgba(248,81,73,0.15); color: #f85149; }
         .level-support { background: rgba(63,185,80,0.15); color: #3fb950; }
-        .pattern-item {
-            padding: 4px 0;
-            font-size: 14px;
-        }
-        .tabs {
-            display: flex;
-            gap: 8px;
-            margin-bottom: 16px;
-        }
-        .tab {
-            padding: 8px 16px;
-            border: 1px solid #30363d;
-            border-radius: 6px;
-            background: transparent;
-            color: #c9d1d9;
-            cursor: pointer;
-            font-size: 14px;
-        }
-        .tab.active { background: #21262d; border-color: #58a6ff; color: #58a6ff; }
-        .pair-section { margin-bottom: 32px; }
-        .pair-title {
-            font-size: 16px;
-            color: #58a6ff;
-            margin-bottom: 12px;
-            padding-bottom: 4px;
-            border-bottom: 2px solid #58a6ff;
-            display: inline-block;
-        }
-        .loading {
-            text-align: center;
-            padding: 60px;
-            color: #8b949e;
-            font-size: 16px;
-        }
+        .pattern-item { padding: 4px 0; font-size: 14px; }
+        .loading { text-align: center; padding: 60px; color: #8b949e; font-size: 16px; }
         .empty { color: #484f58; font-style: italic; }
-        .rsi-bar {
-            height: 8px;
-            background: #21262d;
-            border-radius: 4px;
-            margin-top: 4px;
-            position: relative;
-        }
-        .rsi-fill {
-            height: 100%;
-            border-radius: 4px;
-            transition: width 0.3s;
-        }
+        .rsi-bar { height: 8px; background: #21262d; border-radius: 4px; margin-top: 4px; position: relative; }
+        .rsi-fill { height: 100%; border-radius: 4px; transition: width 0.3s; }
         .footer {
             text-align: center;
             padding: 24px;
@@ -134,201 +187,256 @@
         @media (max-width: 768px) {
             .grid { grid-template-columns: 1fr; }
             .price-main { font-size: 28px; }
+            .strategy-levels { grid-template-columns: 1fr 1fr; }
+            .coin-tab { padding: 6px 12px; font-size: 13px; }
         }
     </style>
 </head>
 <body>
     <div class="header">
-        <h1>📊 Crypto Analyzer</h1>
+        <h1>Crypto Analyzer</h1>
         <div class="update-time" id="updateTime">加载中...</div>
     </div>
 
     <div class="container">
+        <div class="coin-tabs" id="coinTabs"></div>
         <div id="content" class="loading">正在加载数据...</div>
     </div>
 
     <div class="footer">
-        ⚠️ 技术面参考，不构成投资建议。请结合消息面和仓位管理。
+        技术面参考，不构成投资建议。请结合消息面和仓位管理。
     </div>
 
     <script>
+    let allData = [];
+    let activeIndex = 0;
+
     async function loadData() {
         try {
             const resp = await fetch('data/latest.json');
-            if (!resp.ok) throw new Error('No data yet');
+            if (!resp.ok) throw new Error('No data');
             const data = await resp.json();
-            render(data);
+            allData = data.analyses || [];
+
+            const updateTime = new Date(data.updated_at).toLocaleString('zh-CN', { timeZone: 'Asia/Shanghai' });
+            document.getElementById('updateTime').textContent = `更新于 ${updateTime}`;
+
+            renderTabs();
+            renderActive();
         } catch (e) {
             document.getElementById('content').innerHTML =
                 '<div class="loading">暂无数据。请等待 GitHub Actions 首次运行后刷新。</div>';
         }
     }
 
-    function render(data) {
-        const updateTime = new Date(data.updated_at).toLocaleString('zh-CN', { timeZone: 'Asia/Shanghai' });
-        document.getElementById('updateTime').textContent = `更新于 ${updateTime}`;
+    function renderTabs() {
+        const tabs = document.getElementById('coinTabs');
+        tabs.innerHTML = allData.map((r, i) => {
+            const name = r.inst_id.replace('-USDT', '');
+            const ch = r.change_pct;
+            const chClass = ch >= 0 ? 'up' : 'down';
+            const chText = `${ch >= 0 ? '+' : ''}${ch.toFixed(1)}%`;
+            return `<button class="coin-tab ${i === activeIndex ? 'active' : ''}" onclick="switchTab(${i})">
+                ${name}
+                <span class="tab-change ${chClass}">${chText}</span>
+            </button>`;
+        }).join('');
+    }
 
-        let html = '';
-        for (const r of data.analyses) {
-            html += renderPair(r);
-        }
-        document.getElementById('content').innerHTML = html;
+    function switchTab(idx) {
+        activeIndex = idx;
+        renderTabs();
+        renderActive();
+    }
+
+    function renderActive() {
+        if (!allData.length) return;
+        const r = allData[activeIndex];
+        document.getElementById('content').innerHTML = renderPair(r);
+    }
+
+    function fmt(n, dec) {
+        if (n == null) return '-';
+        return '$' + n.toLocaleString('en-US', { minimumFractionDigits: dec || 1, maximumFractionDigits: dec || 1 });
+    }
+
+    function renderStrategy(s, isPrimary) {
+        if (!s) return '';
+        const dirClass = s.direction === 'long' ? 'long' : 'short';
+        const dirIcon = s.direction === 'long' ? '📈' : '📉';
+        const badge = isPrimary ? '<span class="strategy-badge">主策略</span>' : '<span style="font-size:12px;color:#8b949e">备选方案</span>';
+        const rrClass = s.risk_reward >= 2 ? 'rr-good' : s.risk_reward >= 1 ? 'rr-ok' : 'rr-bad';
+
+        return `
+        <div class="strategy-card ${isPrimary ? 'primary' : 'secondary'}">
+            <div class="strategy-header">
+                <div class="strategy-dir ${dirClass}">${dirIcon} ${s.label}</div>
+                <div>${badge}</div>
+            </div>
+            <div class="strategy-levels">
+                <div class="strategy-level">
+                    <div class="label">入场区间</div>
+                    <div class="value">${fmt(s.entry_zone[0])} ~ ${fmt(s.entry_zone[1])}</div>
+                </div>
+                <div class="strategy-level">
+                    <div class="label">止损</div>
+                    <div class="value red">${fmt(s.stop_loss)}</div>
+                </div>
+                <div class="strategy-level">
+                    <div class="label">止盈 1</div>
+                    <div class="value green">${fmt(s.take_profit[0])}</div>
+                </div>
+                <div class="strategy-level">
+                    <div class="label">止盈 2</div>
+                    <div class="value green">${fmt(s.take_profit[1])}</div>
+                </div>
+            </div>
+            <div style="text-align:center;margin-bottom:8px">
+                盈亏比 <span class="rr-badge ${rrClass}">${s.risk_reward.toFixed(2)}</span>
+            </div>
+            <div class="reasons">
+                ${s.reasons_for.length ? `<div class="for">✅ ${s.reasons_for.join(' | ')}</div>` : ''}
+                ${s.reasons_against.length ? `<div class="against" style="margin-top:4px">⚠️ ${s.reasons_against.join(' | ')}</div>` : ''}
+            </div>
+        </div>`;
     }
 
     function renderPair(r) {
         const changeClass = r.change_pct >= 0 ? 'green' : 'red';
         const changeIcon = r.change_pct >= 0 ? '▲' : '▼';
 
-        // Verdict
         let verdictClass = 'verdict-neutral';
         let verdictText = r.verdict;
         if (r.verdict === '偏多') { verdictClass = 'verdict-bull'; verdictText = '📈 偏多 — 关注回踩支撑做多'; }
         else if (r.verdict === '偏空') { verdictClass = 'verdict-bear'; verdictText = '📉 偏空 — 关注反弹阻力做空'; }
         else { verdictText = '⚖️ 多空交织 — 建议观望或轻仓'; }
 
-        // RSI color
         let rsiColor = '#c9d1d9';
         if (r.rsi > 70) rsiColor = '#f85149';
         else if (r.rsi < 30) rsiColor = '#3fb950';
         else if (r.rsi > 60) rsiColor = '#3fb950';
         else if (r.rsi < 40) rsiColor = '#f85149';
 
-        // EMA cross
-        const crossLabels = {
-            golden: '🔥 金叉',
-            death: '☠️ 死叉',
-            bull_align: '📈 多头排列',
-            bear_align: '📉 空头排列'
-        };
+        const crossLabels = { golden: '🔥 金叉', death: '☠️ 死叉', bull_align: '📈 多头排列', bear_align: '📉 空头排列' };
+        const channelLabels = { ascending: '✅ 上升通道', descending: '⚠️ 下降通道', converging: '📐 收敛三角', expanding: '📊 扩散形态', ranging: '📊 横盘震荡' };
+        const patternLabels = { pin_bar_bull: '🔺 看涨Pin Bar', pin_bar_bear: '🔻 看跌Pin Bar', bullish_engulf: '🔺 看涨吞没', bearish_engulf: '🔻 看跌吞没' };
 
-        // Channel labels
-        const channelLabels = {
-            ascending: '✅ 上升通道',
-            descending: '⚠️ 下降通道',
-            converging: '📐 收敛三角',
-            expanding: '📊 扩散形态',
-            ranging: '📊 横盘震荡'
-        };
-
-        // Patterns
-        const patternLabels = {
-            pin_bar_bull: '🔺 看涨Pin Bar',
-            pin_bar_bear: '🔻 看跌Pin Bar',
-            bullish_engulf: '🔺 看涨吞没',
-            bearish_engulf: '🔻 看跌吞没',
-        };
+        // Determine primary/secondary strategy
+        const primary = r.primary_strategy || 'long';
+        const secondary = primary === 'long' ? 'short' : 'long';
 
         return `
-        <div class="pair-section">
-            <div class="pair-title">${r.inst_id} (${r.bar})</div>
-            <div class="grid">
-                <!-- 价格卡片 -->
-                <div class="card">
-                    <h2>当前价格</h2>
-                    <div>
-                        <span class="price-main">$${r.price.toLocaleString('en-US', {minimumFractionDigits: 1})}</span>
-                        <span class="price-change ${changeClass}">${changeIcon} ${Math.abs(r.change_pct).toFixed(2)}%</span>
-                    </div>
-                    <div class="verdict-box ${verdictClass}" style="margin-top:16px">
-                        ${verdictText}
-                    </div>
-                    <div style="margin-top:12px; display:flex; justify-content:center; gap:24px">
-                        <div>多头信号 <strong class="green">${r.bull_signals}</strong></div>
-                        <div>空头信号 <strong class="red">${r.bear_signals}</strong></div>
-                    </div>
+        <div class="grid">
+            <!-- 价格 + 判定 -->
+            <div class="card">
+                <h2>${r.inst_id} · ${r.bar}</h2>
+                <div>
+                    <span class="price-main">${fmt(r.price)}</span>
+                    <span class="price-change ${changeClass}">${changeIcon} ${Math.abs(r.change_pct).toFixed(2)}%</span>
                 </div>
-
-                <!-- 技术指标 -->
-                <div class="card">
-                    <h2>技术指标</h2>
-                    <div class="signal-row">
-                        <span class="signal-label">趋势通道</span>
-                        <span class="signal-value">${channelLabels[r.channel] || r.channel}</span>
-                    </div>
-                    <div class="signal-row">
-                        <span class="signal-label">RSI (14)</span>
-                        <span class="signal-value" style="color:${rsiColor}">${r.rsi.toFixed(1)} ${r.rsi_label}</span>
-                    </div>
-                    <div class="rsi-bar"><div class="rsi-fill" style="width:${r.rsi}%;background:${rsiColor}"></div></div>
-                    ${r.rsi_divergence ? `<div style="margin-top:4px;font-size:13px;color:${r.rsi_divergence==='bullish'?'#3fb950':'#f85149'}">
-                        ${r.rsi_divergence === 'bullish' ? '🔥 底背离 — 潜在反转' : '⚠️ 顶背离 — 潜在见顶'}</div>` : ''}
-                    <div class="signal-row" style="margin-top:8px">
-                        <span class="signal-label">EMA 排列</span>
-                        <span class="signal-value">${crossLabels[r.ema_cross] || r.ema_cross}</span>
-                    </div>
-                    <div class="signal-row">
-                        <span class="signal-label">EMA20</span>
-                        <span class="signal-value ${r.price > r.ema20 ? 'green' : 'red'}">$${r.ema20.toLocaleString()}</span>
-                    </div>
-                    <div class="signal-row">
-                        <span class="signal-label">EMA50</span>
-                        <span class="signal-value ${r.price > r.ema50 ? 'green' : 'red'}">$${r.ema50.toLocaleString()}</span>
-                    </div>
-                    ${r.ema200 ? `<div class="signal-row">
-                        <span class="signal-label">EMA200</span>
-                        <span class="signal-value ${r.price > r.ema200 ? 'green' : 'red'}">$${r.ema200.toLocaleString()}</span>
-                    </div>` : ''}
-                    <div class="signal-row">
-                        <span class="signal-label">ATR (14)</span>
-                        <span class="signal-value">$${r.atr.toLocaleString()} (${r.atr_pct}%)</span>
-                    </div>
-                    <div class="signal-row">
-                        <span class="signal-label">成交量</span>
-                        <span class="signal-value ${r.vol_ratio > 150 ? 'green' : r.vol_ratio < 50 ? 'red' : ''}">${r.vol_ratio}% 均值</span>
-                    </div>
+                <div class="verdict-box ${verdictClass}" style="margin-top:16px">${verdictText}</div>
+                <div style="margin-top:12px; display:flex; justify-content:center; gap:24px">
+                    <div>多头信号 <strong class="green">${r.bull_signals}</strong></div>
+                    <div>空头信号 <strong class="red">${r.bear_signals}</strong></div>
                 </div>
+            </div>
 
-                <!-- 关键价位 -->
-                <div class="card">
-                    <h2>关键价位</h2>
-                    <div style="margin-bottom:12px">
-                        <div style="color:#8b949e;font-size:12px;margin-bottom:4px">阻力位</div>
-                        ${r.resistances.length ? r.resistances.map(s =>
-                            `<span class="level-tag level-resist">$${s.price.toLocaleString()} (x${s.count})</span>`
-                        ).join('') : '<span class="empty">未检测到</span>'}
-                    </div>
-                    <div style="margin-bottom:12px">
-                        <div style="color:#8b949e;font-size:12px;margin-bottom:4px">支撑位</div>
-                        ${r.supports.length ? r.supports.map(s =>
-                            `<span class="level-tag level-support">$${s.price.toLocaleString()} (x${s.count})</span>`
-                        ).join('') : '<span class="empty">未检测到</span>'}
-                    </div>
-                    ${(r.liquidity_highs.length || r.liquidity_lows.length) ? `
-                    <div style="margin-top:12px;border-top:1px solid #21262d;padding-top:8px">
-                        <div style="color:#8b949e;font-size:12px;margin-bottom:4px">💧 流动性池</div>
-                        ${r.liquidity_highs.length ? '<div>上方: ' + r.liquidity_highs.map(h => `<span class="level-tag level-resist">$${h.toLocaleString()}</span>`).join('') + '</div>' : ''}
-                        ${r.liquidity_lows.length ? '<div>下方: ' + r.liquidity_lows.map(l => `<span class="level-tag level-support">$${l.toLocaleString()}</span>`).join('') + '</div>' : ''}
-                    </div>` : ''}
+            <!-- 操作策略 -->
+            <div class="card">
+                <h2>操作策略</h2>
+                ${renderStrategy(r['strategy_' + primary], true)}
+                ${renderStrategy(r['strategy_' + secondary], false)}
+            </div>
+
+            <!-- 技术指标 -->
+            <div class="card">
+                <h2>技术指标</h2>
+                <div class="signal-row">
+                    <span class="signal-label">趋势通道</span>
+                    <span class="signal-value">${channelLabels[r.channel] || r.channel}</span>
                 </div>
-
-                <!-- 形态信号 -->
-                <div class="card">
-                    <h2>形态信号</h2>
-                    ${r.patterns.length ? r.patterns.map(p =>
-                        `<div class="pattern-item">${patternLabels[p.type] || p.type} <span style="color:#8b949e">${p.time.substring(5,16).replace('T',' ')}</span> $${p.close.toLocaleString()}</div>`
-                    ).join('') : '<div class="empty">近期无明显K线形态</div>'}
-
-                    ${r.fvgs.length ? `
-                    <div style="margin-top:12px;border-top:1px solid #21262d;padding-top:8px">
-                        <div style="color:#8b949e;font-size:12px;margin-bottom:4px">FVG 缺口</div>
-                        ${r.fvgs.map(f => `<div class="pattern-item">${f.type === 'bull_fvg' ? '🔺' : '🔻'} $${f.low.toLocaleString()} - $${f.high.toLocaleString()}</div>`).join('')}
-                    </div>` : ''}
-
-                    ${r.breakouts.length ? `
-                    <div style="margin-top:12px;border-top:1px solid #21262d;padding-top:8px">
-                        <div style="color:#8b949e;font-size:12px;margin-bottom:4px">💥 突破检测</div>
-                        ${r.breakouts.map(b => {
-                            const bl = {fake_high:'🔻 假突破(扫高)',fake_low:'🔺 假突破(扫低)',break_high:'✅ 真突破↑',break_low:'❌ 真突破↓'};
-                            return `<div class="pattern-item">${bl[b.type]||b.type} $${b.level.toLocaleString()} → $${b.close.toLocaleString()}</div>`;
-                        }).join('')}
-                    </div>` : ''}
+                <div class="signal-row">
+                    <span class="signal-label">RSI (14)</span>
+                    <span class="signal-value" style="color:${rsiColor}">${r.rsi.toFixed(1)} ${r.rsi_label}</span>
                 </div>
+                <div class="rsi-bar"><div class="rsi-fill" style="width:${r.rsi}%;background:${rsiColor}"></div></div>
+                ${r.rsi_divergence ? `<div style="margin-top:4px;font-size:13px;color:${r.rsi_divergence==='bullish'?'#3fb950':'#f85149'}">
+                    ${r.rsi_divergence === 'bullish' ? '🔥 底背离 — 潜在反转' : '⚠️ 顶背离 — 潜在见顶'}</div>` : ''}
+                <div class="signal-row" style="margin-top:8px">
+                    <span class="signal-label">EMA 排列</span>
+                    <span class="signal-value">${crossLabels[r.ema_cross] || r.ema_cross}</span>
+                </div>
+                <div class="signal-row">
+                    <span class="signal-label">EMA20</span>
+                    <span class="signal-value ${r.price > r.ema20 ? 'green' : 'red'}">${fmt(r.ema20)}</span>
+                </div>
+                <div class="signal-row">
+                    <span class="signal-label">EMA50</span>
+                    <span class="signal-value ${r.price > r.ema50 ? 'green' : 'red'}">${fmt(r.ema50)}</span>
+                </div>
+                ${r.ema200 ? `<div class="signal-row">
+                    <span class="signal-label">EMA200</span>
+                    <span class="signal-value ${r.price > r.ema200 ? 'green' : 'red'}">${fmt(r.ema200)}</span>
+                </div>` : ''}
+                <div class="signal-row">
+                    <span class="signal-label">ATR (14)</span>
+                    <span class="signal-value">${fmt(r.atr)} (${r.atr_pct}%)</span>
+                </div>
+                <div class="signal-row">
+                    <span class="signal-label">成交量</span>
+                    <span class="signal-value ${r.vol_ratio > 150 ? 'green' : r.vol_ratio < 50 ? 'red' : ''}">${r.vol_ratio}% 均值</span>
+                </div>
+            </div>
+
+            <!-- 关键价位 -->
+            <div class="card">
+                <h2>关键价位</h2>
+                <div style="margin-bottom:12px">
+                    <div style="color:#8b949e;font-size:12px;margin-bottom:4px">阻力位</div>
+                    ${r.resistances.length ? r.resistances.map(s =>
+                        `<span class="level-tag level-resist">${fmt(s.price)} (x${s.count})</span>`
+                    ).join('') : '<span class="empty">未检测到</span>'}
+                </div>
+                <div style="margin-bottom:12px">
+                    <div style="color:#8b949e;font-size:12px;margin-bottom:4px">支撑位</div>
+                    ${r.supports.length ? r.supports.map(s =>
+                        `<span class="level-tag level-support">${fmt(s.price)} (x${s.count})</span>`
+                    ).join('') : '<span class="empty">未检测到</span>'}
+                </div>
+                ${(r.liquidity_highs.length || r.liquidity_lows.length) ? `
+                <div style="margin-top:12px;border-top:1px solid #21262d;padding-top:8px">
+                    <div style="color:#8b949e;font-size:12px;margin-bottom:4px">💧 流动性池</div>
+                    ${r.liquidity_highs.length ? '<div>上方: ' + r.liquidity_highs.map(h => `<span class="level-tag level-resist">${fmt(h,0)}</span>`).join('') + '</div>' : ''}
+                    ${r.liquidity_lows.length ? '<div style="margin-top:4px">下方: ' + r.liquidity_lows.map(l => `<span class="level-tag level-support">${fmt(l,0)}</span>`).join('') + '</div>' : ''}
+                </div>` : ''}
+            </div>
+
+            <!-- 形态信号 -->
+            <div class="card">
+                <h2>形态信号</h2>
+                ${r.patterns.length ? r.patterns.map(p =>
+                    `<div class="pattern-item">${patternLabels[p.type] || p.type} <span style="color:#8b949e">${p.time.substring(5,16).replace('T',' ')}</span> ${fmt(p.close,0)}</div>`
+                ).join('') : '<div class="empty">近期无明显K线形态</div>'}
+
+                ${r.fvgs.length ? `
+                <div style="margin-top:12px;border-top:1px solid #21262d;padding-top:8px">
+                    <div style="color:#8b949e;font-size:12px;margin-bottom:4px">FVG 缺口</div>
+                    ${r.fvgs.map(f => `<div class="pattern-item">${f.type === 'bull_fvg' ? '🔺' : '🔻'} ${fmt(f.low,0)} - ${fmt(f.high,0)}</div>`).join('')}
+                </div>` : ''}
+
+                ${r.breakouts.length ? `
+                <div style="margin-top:12px;border-top:1px solid #21262d;padding-top:8px">
+                    <div style="color:#8b949e;font-size:12px;margin-bottom:4px">💥 突破检测</div>
+                    ${r.breakouts.map(b => {
+                        const bl = {fake_high:'🔻 假突破(扫高)',fake_low:'🔺 假突破(扫低)',break_high:'✅ 真突破↑',break_low:'❌ 真突破↓'};
+                        return `<div class="pattern-item">${bl[b.type]||b.type} ${fmt(b.level,0)} → ${fmt(b.close,0)}</div>`;
+                    }).join('')}
+                </div>` : ''}
             </div>
         </div>`;
     }
 
     loadData();
-    // 每5分钟自动刷新
     setInterval(loadData, 300000);
     </script>
 </body>

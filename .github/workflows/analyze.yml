@@ -27,8 +27,9 @@ jobs:
           WECHAT_TOKEN: ${{ secrets.WECHAT_TOKEN }}
         run: |
           cd $GITHUB_WORKSPACE
-          python -m src.main --pairs BTC,ETH,SOL --output json --notify > /dev/null 2>&1 || true
-          python -m src.main --pairs BTC,ETH,SOL
+          PAIRS="BTC,ETH,SOL,HYPE,DOGE,XRP,PEPE,SUI"
+          python -m src.main --pairs $PAIRS --output json --notify > /dev/null 2>&1 || true
+          python -m src.main --pairs $PAIRS
 
       - name: Commit and push results
         run: |
