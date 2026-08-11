@@ -1,32 +1,32 @@
 {
-  "updated_at": "2026-08-10T20:35:29.705901+00:00",
+  "updated_at": "2026-08-11T01:16:35.916843+00:00",
   "analyses": [
     {
       "inst_id": "BTC-USDT",
       "bar": "4H",
-      "timestamp": "2026-08-10T20:00:00+00:00",
-      "price": 64110.1,
+      "timestamp": "2026-08-11T00:00:00+00:00",
+      "price": 64033.9,
       "change_pct": 0.09,
       "candle": {
-        "ts": "2026-08-10T20:00:00+00:00",
-        "open": 64050.4,
-        "high": 64126.4,
-        "low": 64022.3,
-        "close": 64110.1,
-        "vol": 40.32835414
+        "ts": "2026-08-11T00:00:00+00:00",
+        "open": 63974.4,
+        "high": 64080.0,
+        "low": 63893.8,
+        "close": 64033.9,
+        "vol": 129.29549306
       },
-      "ema20": 64714.3,
-      "ema50": 64504.5,
+      "ema20": 64637.8,
+      "ema50": 64483.2,
       "ema200": null,
       "ema_cross": "bull_align",
-      "rsi": 38.5,
+      "rsi": 37.6,
       "rsi_label": "偏弱",
       "rsi_divergence": "bearish",
-      "atr": 411.5,
+      "atr": 407.4,
       "atr_pct": 0.64,
-      "channel": "ranging",
-      "slope_high": -11.6,
-      "slope_low": -27.3,
+      "channel": "descending",
+      "slope_high": -24.8,
+      "slope_low": -44.3,
       "swing_highs": [
         [
           65026.6,
@@ -47,10 +47,6 @@
       ],
       "swing_lows": [
         [
-          64159.6,
-          "2026-08-07T04:00:00+00:00"
-        ],
-        [
           64918.2,
           "2026-08-08T12:00:00+00:00"
         ],
@@ -61,43 +57,37 @@
         [
           64826.2,
           "2026-08-10T00:00:00+00:00"
+        ],
+        [
+          63818.1,
+          "2026-08-10T16:00:00+00:00"
         ]
       ],
       "supports": [
         {
-          "price": 63704.1,
-          "count": 12
-        },
-        {
-          "price": 63467.4,
+          "price": 63712.4,
           "count": 11
         },
         {
-          "price": 62965.7,
-          "count": 6
+          "price": 63468.5,
+          "count": 10
         }
       ],
       "resistances": [
         {
-          "price": 64251.6,
-          "count": 26
+          "price": 64272.9,
+          "count": 30
         },
         {
-          "price": 64510.2,
-          "count": 23
+          "price": 64547.0,
+          "count": 21
         },
         {
-          "price": 64813.7,
-          "count": 27
+          "price": 64877.4,
+          "count": 44
         }
       ],
       "breakouts": [
-        {
-          "type": "fake_low",
-          "time": "2026-08-09T08:00:00+00:00",
-          "level": 64918.2,
-          "close": 64947.9
-        },
         {
           "type": "fake_low",
           "time": "2026-08-09T12:00:00+00:00",
@@ -153,16 +143,10 @@
           "close": 64050.3
         },
         {
-          "type": "break_high",
-          "time": "2026-08-10T04:00:00+00:00",
-          "level": 65026.6,
-          "close": 65203.4
-        },
-        {
-          "type": "break_high",
-          "time": "2026-08-10T04:00:00+00:00",
-          "level": 65189.8,
-          "close": 65203.4
+          "type": "fake_high",
+          "time": "2026-08-10T20:00:00+00:00",
+          "level": 64085.9,
+          "close": 63974.3
         },
         {
           "type": "break_low",
@@ -185,12 +169,6 @@
         {
           "type": "break_low",
           "time": "2026-08-10T16:00:00+00:00",
-          "level": 64172.6,
-          "close": 64050.3
-        },
-        {
-          "type": "break_low",
-          "time": "2026-08-10T16:00:00+00:00",
           "level": 64159.6,
           "close": 64050.3
         }
@@ -201,6 +179,7 @@
       ],
       "liquidity_lows": [
         64170.0,
+        63850.0,
         62280.0
       ],
       "patterns": [],
@@ -220,86 +199,88 @@
         {
           "type": "bear_fvg",
           "time": "2026-08-10T20:00:00+00:00",
-          "low": 64126.4,
+          "low": 64204.3,
           "high": 64205.6
         }
       ],
-      "vol_ratio": 12.0,
+      "vol_ratio": 40.0,
       "bull_signals": 1,
-      "bear_signals": 3,
+      "bear_signals": 4,
       "verdict": "偏空",
       "bias": null,
       "strategy_long": {
         "direction": "long",
         "label": "做多",
         "entry_zone": [
-          63704.1,
-          63827.5
+          63712.4,
+          63834.6
         ],
-        "stop_loss": 63086.8,
+        "stop_loss": 63101.3,
         "take_profit": [
-          64251.6,
-          64510.2
+          64272.9,
+          64547.0
         ],
-        "risk_reward": 0.89,
+        "risk_reward": 0.92,
         "reasons_for": [
           "均线多头排列"
         ],
         "reasons_against": [
+          "下降通道，趋势向下",
           "RSI 38 偏弱",
           "RSI 顶背离"
         ],
-        "confidence": -1
+        "confidence": -2
       },
       "strategy_short": {
         "direction": "short",
         "label": "做空",
         "entry_zone": [
-          64128.2,
-          64251.6
+          64150.7,
+          64272.9
         ],
-        "stop_loss": 64868.8,
+        "stop_loss": 64884.0,
         "take_profit": [
-          63704.1,
-          63467.4
+          63712.4,
+          63468.5
         ],
-        "risk_reward": 0.89,
+        "risk_reward": 0.92,
         "reasons_for": [
+          "下降通道，趋势向下",
           "RSI 顶背离"
         ],
         "reasons_against": [
           "均线多头排列"
         ],
-        "confidence": 0
+        "confidence": 1
       },
       "primary_strategy": "short"
     },
     {
       "inst_id": "ETH-USDT",
       "bar": "4H",
-      "timestamp": "2026-08-10T20:00:00+00:00",
-      "price": 1879.46,
-      "change_pct": 0.04,
+      "timestamp": "2026-08-11T00:00:00+00:00",
+      "price": 1876.15,
+      "change_pct": 0.16,
       "candle": {
-        "ts": "2026-08-10T20:00:00+00:00",
-        "open": 1878.67,
-        "high": 1879.93,
-        "low": 1877.68,
-        "close": 1879.46,
-        "vol": 258.015498
+        "ts": "2026-08-11T00:00:00+00:00",
+        "open": 1873.19,
+        "high": 1877.94,
+        "low": 1870.92,
+        "close": 1876.15,
+        "vol": 1751.54074
       },
-      "ema20": 1905.8,
-      "ema50": 1900.4,
+      "ema20": 1902.4,
+      "ema50": 1899.4,
       "ema200": null,
       "ema_cross": "bull_align",
-      "rsi": 36.9,
+      "rsi": 36.4,
       "rsi_label": "偏弱",
       "rsi_divergence": null,
-      "atr": 16.9,
-      "atr_pct": 0.9,
+      "atr": 16.7,
+      "atr_pct": 0.89,
       "channel": "ranging",
-      "slope_high": -0.9,
-      "slope_low": -1.6,
+      "slope_high": -1.5,
+      "slope_low": -2.2,
       "swing_highs": [
         [
           1920.0,
@@ -320,10 +301,6 @@
       ],
       "swing_lows": [
         [
-          1892.42,
-          "2026-08-06T12:00:00+00:00"
-        ],
-        [
           1894.54,
           "2026-08-07T04:00:00+00:00"
         ],
@@ -334,27 +311,23 @@
         [
           1906.24,
           "2026-08-10T00:00:00+00:00"
+        ],
+        [
+          1868.14,
+          "2026-08-10T16:00:00+00:00"
         ]
       ],
       "supports": [
-        {
-          "price": 1872.7,
-          "count": 24
-        },
         {
           "price": 1864.3,
           "count": 18
         },
         {
-          "price": 1855.7,
-          "count": 10
+          "price": 1855.3,
+          "count": 8
         }
       ],
       "resistances": [
-        {
-          "price": 1886.9,
-          "count": 6
-        },
         {
           "price": 1897.6,
           "count": 12
@@ -362,15 +335,13 @@
         {
           "price": 1906.8,
           "count": 19
+        },
+        {
+          "price": 1914.6,
+          "count": 36
         }
       ],
       "breakouts": [
-        {
-          "type": "fake_high",
-          "time": "2026-08-09T08:00:00+00:00",
-          "level": 1920.0,
-          "close": 1919.23
-        },
         {
           "type": "fake_high",
           "time": "2026-08-09T12:00:00+00:00",
@@ -420,10 +391,16 @@
           "close": 1877.09
         },
         {
-          "type": "break_high",
-          "time": "2026-08-10T04:00:00+00:00",
-          "level": 1920.0,
-          "close": 1925.38
+          "type": "fake_high",
+          "time": "2026-08-10T20:00:00+00:00",
+          "level": 1876.65,
+          "close": 1873.19
+        },
+        {
+          "type": "fake_high",
+          "time": "2026-08-11T00:00:00+00:00",
+          "level": 1876.65,
+          "close": 1876.15
         },
         {
           "type": "break_low",
@@ -456,6 +433,7 @@
         1940.0
       ],
       "liquidity_lows": [
+        1870.0,
         1860.0,
         1850.0
       ],
@@ -464,6 +442,11 @@
           "type": "pin_bar_bull",
           "time": "2026-08-10T16:00:00+00:00",
           "close": 1878.54
+        },
+        {
+          "type": "bearish_engulf",
+          "time": "2026-08-10T20:00:00+00:00",
+          "close": 1873.19
         }
       ],
       "fvgs": [
@@ -474,7 +457,7 @@
           "high": 1914.82
         }
       ],
-      "vol_ratio": 4.0,
+      "vol_ratio": 26.0,
       "bull_signals": 1,
       "bear_signals": 3,
       "verdict": "偏空",
@@ -483,69 +466,72 @@
         "direction": "long",
         "label": "做多",
         "entry_zone": [
-          1872.7,
-          1877.8
+          1864.3,
+          1869.3
         ],
-        "stop_loss": 1847.4,
+        "stop_loss": 1839.2,
         "take_profit": [
-          1886.9,
-          1897.6
+          1897.6,
+          1906.8
         ],
-        "risk_reward": 0.56,
+        "risk_reward": 1.33,
         "reasons_for": [
           "均线多头排列",
           "看涨K线形态"
         ],
         "reasons_against": [
-          "RSI 37 偏弱"
+          "RSI 36 偏弱",
+          "看跌K线形态"
         ],
-        "confidence": 1
+        "confidence": 0
       },
       "strategy_short": {
         "direction": "short",
         "label": "做空",
         "entry_zone": [
-          1881.8,
-          1886.9
+          1892.6,
+          1897.6
         ],
-        "stop_loss": 1912.2,
+        "stop_loss": 1922.6,
         "take_profit": [
-          1872.7,
-          1864.3
+          1864.3,
+          1855.3
         ],
-        "risk_reward": 0.56,
-        "reasons_for": [],
+        "risk_reward": 1.33,
+        "reasons_for": [
+          "看跌K线形态"
+        ],
         "reasons_against": [
           "均线多头排列",
           "看涨K线形态"
         ],
-        "confidence": -2
+        "confidence": -1
       },
       "primary_strategy": "short"
     },
     {
       "inst_id": "SOL-USDT",
       "bar": "4H",
-      "timestamp": "2026-08-10T20:00:00+00:00",
-      "price": 76.34,
-      "change_pct": 0.18,
+      "timestamp": "2026-08-11T00:00:00+00:00",
+      "price": 75.92,
+      "change_pct": -0.12,
       "candle": {
-        "ts": "2026-08-10T20:00:00+00:00",
-        "open": 76.2,
-        "high": 76.35,
-        "low": 76.17,
-        "close": 76.34,
-        "vol": 17633.319281
+        "ts": "2026-08-11T00:00:00+00:00",
+        "open": 76.01,
+        "high": 76.04,
+        "low": 75.71,
+        "close": 75.92,
+        "vol": 19957.406077
       },
       "ema20": 75.9,
       "ema50": 75.0,
       "ema200": null,
       "ema_cross": "bull_align",
-      "rsi": 56.8,
+      "rsi": 52.9,
       "rsi_label": "中性",
       "rsi_divergence": null,
       "atr": 0.8,
-      "atr_pct": 1.04,
+      "atr_pct": 1.03,
       "channel": "ranging",
       "slope_high": 0.1,
       "slope_low": 0.1,
@@ -569,10 +555,6 @@
       ],
       "swing_lows": [
         [
-          73.27,
-          "2026-08-05T12:00:00+00:00"
-        ],
-        [
           72.35,
           "2026-08-06T20:00:00+00:00"
         ],
@@ -583,35 +565,41 @@
         [
           76.21,
           "2026-08-09T20:00:00+00:00"
+        ],
+        [
+          75.59,
+          "2026-08-10T16:00:00+00:00"
         ]
       ],
       "supports": [
         {
-          "price": 76.2,
-          "count": 14
-        },
-        {
-          "price": 75.9,
-          "count": 10
-        },
-        {
           "price": 74.8,
           "count": 7
+        },
+        {
+          "price": 74.4,
+          "count": 13
+        },
+        {
+          "price": 74.1,
+          "count": 26
         }
       ],
       "resistances": [
+        {
+          "price": 76.2,
+          "count": 15
+        },
+        {
+          "price": 76.4,
+          "count": 13
+        },
         {
           "price": 77.1,
           "count": 11
         }
       ],
       "breakouts": [
-        {
-          "type": "fake_low",
-          "time": "2026-08-09T08:00:00+00:00",
-          "level": 76.21,
-          "close": 76.51
-        },
         {
           "type": "fake_high",
           "time": "2026-08-09T20:00:00+00:00",
@@ -638,15 +626,9 @@
         },
         {
           "type": "fake_low",
-          "time": "2026-08-10T20:00:00+00:00",
-          "level": 76.21,
-          "close": 76.34
-        },
-        {
-          "type": "break_high",
-          "time": "2026-08-10T04:00:00+00:00",
-          "level": 76.82,
-          "close": 76.99
+          "time": "2026-08-11T00:00:00+00:00",
+          "level": 75.75,
+          "close": 75.92
         },
         {
           "type": "break_low",
@@ -677,12 +659,6 @@
       "fvgs": [
         {
           "type": "bull_fvg",
-          "time": "2026-08-09T08:00:00+00:00",
-          "low": 76.09,
-          "high": 76.11
-        },
-        {
-          "type": "bull_fvg",
           "time": "2026-08-09T16:00:00+00:00",
           "low": 76.66,
           "high": 77.09
@@ -694,7 +670,7 @@
           "high": 76.54
         }
       ],
-      "vol_ratio": 22.0,
+      "vol_ratio": 25.0,
       "bull_signals": 4,
       "bear_signals": 0,
       "verdict": "偏多",
@@ -703,15 +679,15 @@
         "direction": "long",
         "label": "做多",
         "entry_zone": [
+          74.8,
+          75.0
+        ],
+        "stop_loss": 73.6,
+        "take_profit": [
           76.2,
           76.4
         ],
-        "stop_loss": 75.0,
-        "take_profit": [
-          77.1,
-          78.6
-        ],
-        "risk_reward": 0.75,
+        "risk_reward": 1.17,
         "reasons_for": [
           "均线多头排列",
           "看涨K线形态"
@@ -725,21 +701,21 @@
         "direction": "short",
         "label": "做空",
         "entry_zone": [
-          76.9,
-          77.1
+          76.0,
+          76.2
         ],
-        "stop_loss": 78.3,
+        "stop_loss": 77.4,
         "take_profit": [
-          76.2,
-          75.9
+          74.8,
+          74.4
         ],
-        "risk_reward": 0.75,
+        "risk_reward": 1.17,
         "reasons_for": [
           "看跌K线形态"
         ],
         "reasons_against": [
           "均线多头排列",
-          "RSI 57 偏强",
+          "RSI 53 偏强",
           "看涨K线形态"
         ],
         "confidence": -2
@@ -749,22 +725,22 @@
     {
       "inst_id": "HYPE-USDT",
       "bar": "4H",
-      "timestamp": "2026-08-10T20:00:00+00:00",
-      "price": 55.566,
-      "change_pct": -0.62,
+      "timestamp": "2026-08-11T00:00:00+00:00",
+      "price": 54.939,
+      "change_pct": -0.31,
       "candle": {
-        "ts": "2026-08-10T20:00:00+00:00",
-        "open": 55.915,
-        "high": 56.136,
-        "low": 55.546,
-        "close": 55.566,
-        "vol": 11132.0898
+        "ts": "2026-08-11T00:00:00+00:00",
+        "open": 55.11,
+        "high": 55.112,
+        "low": 54.813,
+        "close": 54.939,
+        "vol": 4042.5421
       },
       "ema20": 54.9,
       "ema50": 55.0,
       "ema200": null,
       "ema_cross": "bear_align",
-      "rsi": 54.9,
+      "rsi": 50.1,
       "rsi_label": "中性",
       "rsi_divergence": null,
       "atr": 0.9,
@@ -792,10 +768,6 @@
       ],
       "swing_lows": [
         [
-          55.075,
-          "2026-08-07T04:00:00+00:00"
-        ],
-        [
           53.442,
           "2026-08-07T16:00:00+00:00"
         ],
@@ -806,45 +778,43 @@
         [
           53.758,
           "2026-08-09T20:00:00+00:00"
+        ],
+        [
+          54.005,
+          "2026-08-10T16:00:00+00:00"
         ]
       ],
       "supports": [
+        {
+          "price": 54.8,
+          "count": 25
+        },
+        {
+          "price": 54.6,
+          "count": 16
+        },
+        {
+          "price": 54.3,
+          "count": 14
+        }
+      ],
+      "resistances": [
         {
           "price": 55.3,
           "count": 8
         },
         {
-          "price": 55.0,
-          "count": 16
-        },
-        {
-          "price": 54.8,
-          "count": 24
-        }
-      ],
-      "resistances": [
-        {
-          "price": 55.7,
-          "count": 13
-        },
-        {
-          "price": 56.0,
+          "price": 55.5,
           "count": 11
         },
         {
-          "price": 56.2,
-          "count": 9
+          "price": 55.7,
+          "count": 13
         }
       ],
       "breakouts": [
         {
           "type": "fake_high",
-          "time": "2026-08-09T08:00:00+00:00",
-          "level": 54.882,
-          "close": 54.302
-        },
-        {
-          "type": "fake_high",
           "time": "2026-08-09T12:00:00+00:00",
           "level": 54.882,
           "close": 54.862
@@ -866,6 +836,12 @@
           "time": "2026-08-09T16:00:00+00:00",
           "level": 54.693,
           "close": 54.71
+        },
+        {
+          "type": "fake_low",
+          "time": "2026-08-10T00:00:00+00:00",
+          "level": 54.005,
+          "close": 54.133
         },
         {
           "type": "fake_low",
@@ -907,13 +883,19 @@
           "type": "fake_high",
           "time": "2026-08-10T20:00:00+00:00",
           "level": 55.894,
-          "close": 55.566
+          "close": 55.103
         },
         {
-          "type": "break_low",
-          "time": "2026-08-10T12:00:00+00:00",
-          "level": 54.696,
-          "close": 54.362
+          "type": "fake_low",
+          "time": "2026-08-10T20:00:00+00:00",
+          "level": 55.075,
+          "close": 55.103
+        },
+        {
+          "type": "fake_high",
+          "time": "2026-08-11T00:00:00+00:00",
+          "level": 55.049,
+          "close": 54.939
         },
         {
           "type": "break_high",
@@ -932,6 +914,12 @@
           "time": "2026-08-10T16:00:00+00:00",
           "level": 55.049,
           "close": 55.92
+        },
+        {
+          "type": "break_low",
+          "time": "2026-08-11T00:00:00+00:00",
+          "level": 55.075,
+          "close": 54.939
         }
       ],
       "liquidity_highs": [
@@ -963,32 +951,26 @@
           "time": "2026-08-10T00:00:00+00:00",
           "low": 54.555,
           "high": 54.583
-        },
-        {
-          "type": "bull_fvg",
-          "time": "2026-08-10T20:00:00+00:00",
-          "low": 55.303,
-          "high": 55.546
         }
       ],
-      "vol_ratio": 35.0,
-      "bull_signals": 3,
-      "bear_signals": 1,
-      "verdict": "偏多",
+      "vol_ratio": 16.0,
+      "bull_signals": 2,
+      "bear_signals": 2,
+      "verdict": "多空交织",
       "bias": null,
       "strategy_long": {
         "direction": "long",
         "label": "做多",
         "entry_zone": [
-          55.3,
-          55.6
+          54.8,
+          55.1
         ],
-        "stop_loss": 53.9,
+        "stop_loss": 53.4,
         "take_profit": [
-          55.7,
-          56.0
+          55.3,
+          55.5
         ],
-        "risk_reward": 0.29,
+        "risk_reward": 0.36,
         "reasons_for": [
           "看涨K线形态",
           "看涨K线形态"
@@ -1003,21 +985,21 @@
         "direction": "short",
         "label": "做空",
         "entry_zone": [
-          55.4,
-          55.7
+          55.0,
+          55.3
         ],
-        "stop_loss": 57.1,
+        "stop_loss": 56.6,
         "take_profit": [
-          55.3,
-          55.0
+          54.8,
+          54.6
         ],
-        "risk_reward": 0.29,
+        "risk_reward": 0.38,
         "reasons_for": [
           "均线空头排列",
           "看跌K线形态"
         ],
         "reasons_against": [
-          "RSI 55 偏强",
+          "RSI 50 偏强",
           "看涨K线形态",
           "看涨K线形态"
         ],
@@ -1028,26 +1010,26 @@
     {
       "inst_id": "DOGE-USDT",
       "bar": "4H",
-      "timestamp": "2026-08-10T20:00:00+00:00",
-      "price": 0.06993,
-      "change_pct": 0.06,
+      "timestamp": "2026-08-11T00:00:00+00:00",
+      "price": 0.07,
+      "change_pct": 0.42,
       "candle": {
-        "ts": "2026-08-10T20:00:00+00:00",
-        "open": 0.06989,
-        "high": 0.06999,
-        "low": 0.06984,
-        "close": 0.06993,
-        "vol": 1960128.656273
+        "ts": "2026-08-11T00:00:00+00:00",
+        "open": 0.06971,
+        "high": 0.07006,
+        "low": 0.06963,
+        "close": 0.07,
+        "vol": 5761091.492865
       },
       "ema20": 0.1,
       "ema50": 0.1,
       "ema200": null,
       "ema_cross": "bear_align",
-      "rsi": 49.2,
+      "rsi": 50.2,
       "rsi_label": "中性",
       "rsi_divergence": null,
       "atr": 0.0,
-      "atr_pct": 0.95,
+      "atr_pct": 0.96,
       "channel": "ranging",
       "slope_high": -0.0,
       "slope_low": -0.0,
@@ -1090,7 +1072,7 @@
       "supports": [
         {
           "price": 0.1,
-          "count": 30
+          "count": 38
         },
         {
           "price": 0.1,
@@ -1098,21 +1080,21 @@
         },
         {
           "price": 0.1,
-          "count": 15
+          "count": 17
         }
       ],
       "resistances": [
         {
           "price": 0.1,
-          "count": 41
+          "count": 37
         },
         {
           "price": 0.1,
-          "count": 27
+          "count": 28
         },
         {
           "price": 0.1,
-          "count": 12
+          "count": 11
         }
       ],
       "breakouts": [
@@ -1166,15 +1148,21 @@
         },
         {
           "type": "fake_low",
-          "time": "2026-08-10T20:00:00+00:00",
+          "time": "2026-08-11T00:00:00+00:00",
           "level": 0.06989,
-          "close": 0.06993
+          "close": 0.07
         },
         {
           "type": "break_low",
           "time": "2026-08-10T12:00:00+00:00",
           "level": 0.06985,
           "close": 0.06966
+        },
+        {
+          "type": "break_low",
+          "time": "2026-08-10T20:00:00+00:00",
+          "level": 0.06985,
+          "close": 0.0697
         }
       ],
       "liquidity_highs": [
@@ -1188,6 +1176,11 @@
           "type": "pin_bar_bull",
           "time": "2026-08-10T08:00:00+00:00",
           "close": 0.07003
+        },
+        {
+          "type": "bullish_engulf",
+          "time": "2026-08-11T00:00:00+00:00",
+          "close": 0.07
         }
       ],
       "fvgs": [
@@ -1204,10 +1197,10 @@
           "high": 0.07039
         }
       ],
-      "vol_ratio": 4.0,
-      "bull_signals": 0,
-      "bear_signals": 4,
-      "verdict": "偏空",
+      "vol_ratio": 11.0,
+      "bull_signals": 2,
+      "bear_signals": 2,
+      "verdict": "多空交织",
       "bias": null,
       "strategy_long": {
         "direction": "long",
@@ -1223,13 +1216,13 @@
         ],
         "risk_reward": 0,
         "reasons_for": [
+          "看涨K线形态",
           "看涨K线形态"
         ],
         "reasons_against": [
-          "均线空头排列",
-          "RSI 49 偏弱"
+          "均线空头排列"
         ],
-        "confidence": -1
+        "confidence": 1
       },
       "strategy_short": {
         "direction": "short",
@@ -1248,35 +1241,37 @@
           "均线空头排列"
         ],
         "reasons_against": [
+          "RSI 50 偏强",
+          "看涨K线形态",
           "看涨K线形态"
         ],
-        "confidence": 0
+        "confidence": -2
       },
-      "primary_strategy": "short"
+      "primary_strategy": "long"
     },
     {
       "inst_id": "XRP-USDT",
       "bar": "4H",
-      "timestamp": "2026-08-10T20:00:00+00:00",
-      "price": 1.0207,
-      "change_pct": 0.01,
+      "timestamp": "2026-08-11T00:00:00+00:00",
+      "price": 1.0138,
+      "change_pct": 0.15,
       "candle": {
-        "ts": "2026-08-10T20:00:00+00:00",
-        "open": 1.0206,
-        "high": 1.021,
-        "low": 1.0193,
-        "close": 1.0207,
-        "vol": 288415.468189
+        "ts": "2026-08-11T00:00:00+00:00",
+        "open": 1.0123,
+        "high": 1.0141,
+        "low": 1.0101,
+        "close": 1.0138,
+        "vol": 898264.12611
       },
       "ema20": 1.0,
       "ema50": 1.0,
       "ema200": null,
       "ema_cross": "bear_align",
-      "rsi": 36.7,
+      "rsi": 34.0,
       "rsi_label": "偏弱",
       "rsi_divergence": null,
       "atr": 0.0,
-      "atr_pct": 1.02,
+      "atr_pct": 1.08,
       "channel": "ranging",
       "slope_high": -0.0,
       "slope_low": -0.0,
@@ -1320,7 +1315,7 @@
       "resistances": [
         {
           "price": 1.0,
-          "count": 7
+          "count": 12
         },
         {
           "price": 1.0,
@@ -1375,6 +1370,12 @@
           "close": 1.0346
         },
         {
+          "type": "fake_low",
+          "time": "2026-08-11T00:00:00+00:00",
+          "level": 1.013,
+          "close": 1.0138
+        },
+        {
           "type": "break_low",
           "time": "2026-08-10T12:00:00+00:00",
           "level": 1.0311,
@@ -1385,6 +1386,18 @@
           "time": "2026-08-10T12:00:00+00:00",
           "level": 1.0279,
           "close": 1.0232
+        },
+        {
+          "type": "break_low",
+          "time": "2026-08-10T20:00:00+00:00",
+          "level": 1.0151,
+          "close": 1.0123
+        },
+        {
+          "type": "break_low",
+          "time": "2026-08-10T20:00:00+00:00",
+          "level": 1.013,
+          "close": 1.0123
         }
       ],
       "liquidity_highs": [
@@ -1393,13 +1406,7 @@
       "liquidity_lows": [
         0.0
       ],
-      "patterns": [
-        {
-          "type": "pin_bar_bull",
-          "time": "2026-08-10T20:00:00+00:00",
-          "close": 1.0207
-        }
-      ],
+      "patterns": [],
       "fvgs": [
         {
           "type": "bull_fvg",
@@ -1412,9 +1419,15 @@
           "time": "2026-08-10T16:00:00+00:00",
           "low": 1.0256,
           "high": 1.0302
+        },
+        {
+          "type": "bear_fvg",
+          "time": "2026-08-11T00:00:00+00:00",
+          "low": 1.0141,
+          "high": 1.0159
         }
       ],
-      "vol_ratio": 10.0,
+      "vol_ratio": 31.0,
       "bull_signals": 0,
       "bear_signals": 4,
       "verdict": "偏空",
@@ -1432,14 +1445,12 @@
           1.0
         ],
         "risk_reward": 0,
-        "reasons_for": [
-          "看涨K线形态"
-        ],
+        "reasons_for": [],
         "reasons_against": [
           "均线空头排列",
-          "RSI 37 偏弱"
+          "RSI 34 偏弱"
         ],
-        "confidence": -1
+        "confidence": -2
       },
       "strategy_short": {
         "direction": "short",
@@ -1457,32 +1468,30 @@
         "reasons_for": [
           "均线空头排列"
         ],
-        "reasons_against": [
-          "看涨K线形态"
-        ],
-        "confidence": 0
+        "reasons_against": [],
+        "confidence": 1
       },
       "primary_strategy": "short"
     },
     {
       "inst_id": "PEPE-USDT",
       "bar": "4H",
-      "timestamp": "2026-08-10T20:00:00+00:00",
-      "price": 2.868e-06,
-      "change_pct": -0.07,
+      "timestamp": "2026-08-11T00:00:00+00:00",
+      "price": 2.879e-06,
+      "change_pct": 0.07,
       "candle": {
-        "ts": "2026-08-10T20:00:00+00:00",
-        "open": 2.87e-06,
-        "high": 2.872e-06,
-        "low": 2.864e-06,
-        "close": 2.868e-06,
-        "vol": 18914623219.0
+        "ts": "2026-08-11T00:00:00+00:00",
+        "open": 2.877e-06,
+        "high": 2.891e-06,
+        "low": 2.872e-06,
+        "close": 2.879e-06,
+        "vol": 56105149769.0
       },
       "ema20": 0.0,
       "ema50": 0.0,
       "ema200": null,
       "ema_cross": "bull_align",
-      "rsi": 50.2,
+      "rsi": 52.7,
       "rsi_label": "中性",
       "rsi_divergence": "bearish",
       "atr": 0.0,
@@ -1529,21 +1538,21 @@
       "supports": [
         {
           "price": 0.0,
-          "count": 22
+          "count": 28
         },
         {
           "price": 0.0,
-          "count": 23
+          "count": 21
         },
         {
           "price": 0.0,
-          "count": 14
+          "count": 24
         }
       ],
       "resistances": [
         {
           "price": 0.0,
-          "count": 21
+          "count": 22
         },
         {
           "price": 0.0,
@@ -1555,18 +1564,6 @@
         }
       ],
       "breakouts": [
-        {
-          "type": "fake_high",
-          "time": "2026-08-09T08:00:00+00:00",
-          "level": 2.874e-06,
-          "close": 2.871e-06
-        },
-        {
-          "type": "fake_low",
-          "time": "2026-08-09T08:00:00+00:00",
-          "level": 2.867e-06,
-          "close": 2.871e-06
-        },
         {
           "type": "fake_low",
           "time": "2026-08-09T12:00:00+00:00",
@@ -1631,7 +1628,13 @@
           "type": "fake_low",
           "time": "2026-08-10T20:00:00+00:00",
           "level": 2.867e-06,
-          "close": 2.868e-06
+          "close": 2.877e-06
+        },
+        {
+          "type": "break_high",
+          "time": "2026-08-10T20:00:00+00:00",
+          "level": 2.874e-06,
+          "close": 2.877e-06
         }
       ],
       "liquidity_highs": [
@@ -1647,9 +1650,14 @@
           "close": 2.894e-06
         },
         {
-          "type": "bearish_engulf",
+          "type": "pin_bar_bull",
           "time": "2026-08-10T20:00:00+00:00",
-          "close": 2.868e-06
+          "close": 2.877e-06
+        },
+        {
+          "type": "pin_bar_bear",
+          "time": "2026-08-11T00:00:00+00:00",
+          "close": 2.879e-06
         }
       ],
       "fvgs": [
@@ -1660,9 +1668,9 @@
           "high": 2.89e-06
         }
       ],
-      "vol_ratio": 7.0,
-      "bull_signals": 3,
-      "bear_signals": 1,
+      "vol_ratio": 21.0,
+      "bull_signals": 4,
+      "bear_signals": 0,
       "verdict": "偏多",
       "bias": null,
       "strategy_long": {
@@ -1680,13 +1688,14 @@
         "risk_reward": 0,
         "reasons_for": [
           "均线多头排列",
+          "看涨K线形态",
           "看涨K线形态"
         ],
         "reasons_against": [
           "RSI 顶背离",
           "看跌K线形态"
         ],
-        "confidence": 0
+        "confidence": 1
       },
       "strategy_short": {
         "direction": "short",
@@ -1707,36 +1716,37 @@
         ],
         "reasons_against": [
           "均线多头排列",
-          "RSI 50 偏强",
+          "RSI 53 偏强",
+          "看涨K线形态",
           "看涨K线形态"
         ],
-        "confidence": -1
+        "confidence": -2
       },
       "primary_strategy": "long"
     },
     {
       "inst_id": "SUI-USDT",
       "bar": "4H",
-      "timestamp": "2026-08-10T20:00:00+00:00",
-      "price": 0.6917,
-      "change_pct": -0.14,
+      "timestamp": "2026-08-11T00:00:00+00:00",
+      "price": 0.6876,
+      "change_pct": 0.44,
       "candle": {
-        "ts": "2026-08-10T20:00:00+00:00",
-        "open": 0.6927,
-        "high": 0.6941,
-        "low": 0.6916,
-        "close": 0.6917,
-        "vol": 138746.78
+        "ts": "2026-08-11T00:00:00+00:00",
+        "open": 0.6846,
+        "high": 0.6879,
+        "low": 0.6833,
+        "close": 0.6876,
+        "vol": 174408.4488
       },
       "ema20": 0.7,
       "ema50": 0.7,
       "ema200": null,
       "ema_cross": "bull_align",
-      "rsi": 52.1,
+      "rsi": 48.7,
       "rsi_label": "中性",
       "rsi_divergence": null,
       "atr": 0.0,
-      "atr_pct": 1.35,
+      "atr_pct": 1.4,
       "channel": "ranging",
       "slope_high": 0.0,
       "slope_low": 0.0,
@@ -1779,29 +1789,29 @@
       "supports": [
         {
           "price": 0.7,
-          "count": 26
+          "count": 20
         },
         {
           "price": 0.7,
-          "count": 18
+          "count": 10
         },
         {
           "price": 0.7,
-          "count": 8
+          "count": 10
         }
       ],
       "resistances": [
         {
           "price": 0.7,
-          "count": 29
+          "count": 31
+        },
+        {
+          "price": 0.7,
+          "count": 27
         },
         {
           "price": 0.7,
           "count": 26
-        },
-        {
-          "price": 0.7,
-          "count": 8
         }
       ],
       "breakouts": [
@@ -1864,6 +1874,24 @@
           "time": "2026-08-10T16:00:00+00:00",
           "level": 0.6877,
           "close": 0.6926
+        },
+        {
+          "type": "fake_low",
+          "time": "2026-08-10T20:00:00+00:00",
+          "level": 0.6833,
+          "close": 0.6845
+        },
+        {
+          "type": "fake_low",
+          "time": "2026-08-11T00:00:00+00:00",
+          "level": 0.6868,
+          "close": 0.6876
+        },
+        {
+          "type": "break_low",
+          "time": "2026-08-10T20:00:00+00:00",
+          "level": 0.6877,
+          "close": 0.6845
         }
       ],
       "liquidity_highs": [
@@ -1882,6 +1910,11 @@
           "type": "bearish_engulf",
           "time": "2026-08-10T12:00:00+00:00",
           "close": 0.6908
+        },
+        {
+          "type": "bearish_engulf",
+          "time": "2026-08-10T20:00:00+00:00",
+          "close": 0.6845
         }
       ],
       "fvgs": [
@@ -1898,10 +1931,10 @@
           "high": 0.6976
         }
       ],
-      "vol_ratio": 7.0,
-      "bull_signals": 4,
-      "bear_signals": 0,
-      "verdict": "偏多",
+      "vol_ratio": 9.0,
+      "bull_signals": 1,
+      "bear_signals": 3,
+      "verdict": "偏空",
       "bias": null,
       "strategy_long": {
         "direction": "long",
@@ -1921,9 +1954,11 @@
           "看涨K线形态"
         ],
         "reasons_against": [
+          "RSI 49 偏弱",
+          "看跌K线形态",
           "看跌K线形态"
         ],
-        "confidence": 1
+        "confidence": -1
       },
       "strategy_short": {
         "direction": "short",
@@ -1939,16 +1974,16 @@
         ],
         "risk_reward": 0,
         "reasons_for": [
+          "看跌K线形态",
           "看跌K线形态"
         ],
         "reasons_against": [
           "均线多头排列",
-          "RSI 52 偏强",
           "看涨K线形态"
         ],
-        "confidence": -2
+        "confidence": 0
       },
-      "primary_strategy": "long"
+      "primary_strategy": "short"
     }
   ]
 }
